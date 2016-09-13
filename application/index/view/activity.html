@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+	<meta name="keywords" content="[keywords]" />
+	<meta name="description" content="[description]"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<meta http-equiv="Cache-Control" content="no-transform" />
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+	<!--[if lte IE 9]>
+	<link rel="stylesheet" type="text/css" href="__CSS__/IE/ie.css" />
+	<![endif]-->
+
+	<!--[if IE 9]>
+	<script type="text/javascript" src="__STATIC__/PIE-2.0beta1/PIE_IE9.js"></script>
+	<link rel="stylesheet" type="text/css" href="__CSS__/IE/ie9.css" />
+	<![endif]-->
+
+	<!--[if lt IE 9]>
+	<script type="text/javascript" src="__JS__/html5.js"></script>
+	<script type="text/javascript" src="__STATIC__/PIE-2.0beta1/PIE_IE678.js"></script>
+	<link rel="stylesheet" type="text/css" href="__CSS__/IE/ie678.css" />
+	<![endif]-->
+
+	<title>[title]</title>
+	<link rel="stylesheet" href="__CSS__/core/core.css">
+	<link rel="stylesheet" href="__CSS__/style.css">
+	<script type="text/javascript" src="__JS__/zepto.min.js"></script>
+</head>
+<body>
+
+	<style>body {background-color: #f2f2f2}</style>
+
+	<div id="act-top">
+		<button class="round-button active">我参加的</button><button class="round-button">我发起的</button>
+	</div>
+
+	<div id="act-list">
+		<div class="act-item clearfix">
+			<div class="act-img"><img src="__PUBLIC__/images/activity.png" alt=""></div>
+			<div class="act-info">
+				<h2 class="act-title one-line">
+					<a href="{:url('activity/detail')}">蒙牛全明星~早间青春SHOW</a>
+				</h2>
+				<div class="act-organize clearfix">
+					<img src="__PUBLIC__/images/user.png" alt="">
+					<span class="one-line">蒙牛早餐奶(浙江工业大学)</span>
+				</div>
+				<p class="act-time one-line">活动时间: 2016.9.2 - 9.30</p>
+				<div class="act-operate">
+					<button class="active">社团互助</button>
+					<span>一天前发布</span>
+					<img src="__PUBLIC__/images/activity_ing.png" alt="">
+				</div>
+			</div>
+		</div>
+	</div>
+
+<script>
+	$(function() {
+		$(".round-button").click(function() {
+			$(this).addClass('active');
+			$(this).siblings().removeClass('active');
+			if($(this).prev().length) {
+				alert('功能开发中~');
+			}
+		})
+	})
+</script>
+</body>
+</html>
