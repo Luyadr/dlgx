@@ -70,7 +70,7 @@ class Node extends Base
         }
         $node = new NodeModel();
         $this->assign([
-            'node' => $node->getAllInfo(),
+            'node' => $node->getListByWhere(),
             'status' => config('user_status')
         ]);
         return $this->fetch();
@@ -131,8 +131,8 @@ class Node extends Base
 
         $id = input('param.id');
         $this->assign([
-            'nodes' => $node->getAllInfo(),
-            'node' => $node->info($id)
+            'nodes' => $node->getListByWhere(),
+            'node' => $node->getInfoById($id)
         ]);
 		
         return $this->fetch();
@@ -161,8 +161,8 @@ class Node extends Base
 
         $id = input('param.id');
         $this->assign([
-            'nodes' => $node->getAllInfo(),
-            'node' => $node->info($id)
+            'nodes' => $node->getListByWhere(),
+            'node' => $node->getInfoById($id)
         ]);
         return $this->fetch();
     }

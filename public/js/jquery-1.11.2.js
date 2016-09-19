@@ -2156,10 +2156,10 @@ function addCombinator( matcher, combinator, base ) {
 						if ( (oldCache = outerCache[ dir ]) &&
 							oldCache[ 0 ] === dirruns && oldCache[ 1 ] === doneName ) {
 
-							// Assign to newCache so results backup-propagate to previous elements
+							// Assign to newCache so results back-propagate to previous elements
 							return (newCache[ 2 ] = oldCache[ 2 ]);
 						} else {
-							// Reuse newcache so results backup-propagate to previous elements
+							// Reuse newcache so results back-propagate to previous elements
 							outerCache[ dir ] = newCache;
 
 							// A match means we're done; a fail means we have to keep checking
@@ -2259,7 +2259,7 @@ function setMatcher( preFilter, selector, matcher, postFilter, postFinder, postS
 			temp = condense( matcherOut, postMap );
 			postFilter( temp, [], context, xml );
 
-			// Un-match failing elements by moving them backup to matcherIn
+			// Un-match failing elements by moving them back to matcherIn
 			i = temp.length;
 			while ( i-- ) {
 				if ( (elem = temp[i]) ) {
@@ -2793,7 +2793,7 @@ var rootjQuery,
 				if ( match[1] ) {
 					context = context instanceof jQuery ? context[0] : context;
 
-					// scripts is true for backup-compat
+					// scripts is true for back-compat
 					// Intentionally let the error be thrown if parseHTML is not present
 					jQuery.merge( this, jQuery.parseHTML(
 						match[1],
@@ -3319,7 +3319,7 @@ jQuery.extend({
 			},
 			deferred = {};
 
-		// Keep pipe for backup-compat
+		// Keep pipe for back-compat
 		promise.pipe = promise.then;
 
 		// Add list-specific methods
@@ -6595,7 +6595,7 @@ function getWidthOrHeight( elem, name, extra ) {
 	// svg - https://bugzilla.mozilla.org/show_bug.cgi?id=649285
 	// MathML - https://bugzilla.mozilla.org/show_bug.cgi?id=491668
 	if ( val <= 0 || val == null ) {
-		// Fall backup to computed then uncomputed css if necessary
+		// Fall back to computed then uncomputed css if necessary
 		val = curCSS( elem, name, styles );
 		if ( val < 0 || val == null ) {
 			val = elem.style[ name ];
@@ -6607,7 +6607,7 @@ function getWidthOrHeight( elem, name, extra ) {
 		}
 
 		// we need the check for style in case a browser which returns unreliable values
-		// for getComputedStyle silently falls backup to the reliable elem.style
+		// for getComputedStyle silently falls back to the reliable elem.style
 		valueIsBorderBox = isBorderBox && ( support.boxSizingReliable() || val === elem.style[ name ] );
 
 		// Normalize "", auto, and prepare for extra
@@ -6633,7 +6633,7 @@ jQuery.extend({
 		opacity: {
 			get: function( elem, computed ) {
 				if ( computed ) {
-					// We should always get a number backup from opacity
+					// We should always get a number back from opacity
 					var ret = curCSS( elem, "opacity" );
 					return ret === "" ? "1" : ret;
 				}
@@ -6992,7 +6992,7 @@ Tween.propHooks = {
 			return !result || result === "auto" ? 0 : result;
 		},
 		set: function( tween ) {
-			// use step hook for backup compat - use cssHook if its there - use .style if its
+			// use step hook for back compat - use cssHook if its there - use .style if its
 			// available and use plain properties where available
 			if ( jQuery.fx.step[ tween.prop ] ) {
 				jQuery.fx.step[ tween.prop ]( tween );
@@ -7798,7 +7798,7 @@ jQuery.fn.extend({
 
 			hooks = jQuery.valHooks[ this.type ] || jQuery.valHooks[ this.nodeName.toLowerCase() ];
 
-			// If set returns undefined, fall backup to normal setting
+			// If set returns undefined, fall back to normal setting
 			if ( !hooks || !("set" in hooks) || hooks.set( this, val, "value" ) === undefined ) {
 				this.value = val;
 			}
@@ -8438,8 +8438,8 @@ jQuery.fn.extend({
 
 				// If the element has a class name or if we're passed "false",
 				// then remove the whole classname (if there was one, the above saved it).
-				// Otherwise bring backup whatever was previously saved (if anything),
-				// falling backup to the empty string if nothing was stored.
+				// Otherwise bring back whatever was previously saved (if anything),
+				// falling back to the empty string if nothing was stored.
 				this.className = this.className || value === false ? "" : jQuery._data( this, "__className__" ) || "";
 			}
 		});
@@ -9902,7 +9902,7 @@ jQuery.ajaxPrefilter( "json jsonp", function( s, originalSettings, jqXHR ) {
 			// Restore preexisting value
 			window[ callbackName ] = overwritten;
 
-			// Save backup as free
+			// Save back as free
 			if ( s[ callbackName ] ) {
 				// make sure that re-using the options doesn't screw things around
 				s.jsonpCallback = originalSettings.jsonpCallback;

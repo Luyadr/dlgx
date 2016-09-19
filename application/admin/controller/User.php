@@ -21,7 +21,7 @@ class User extends Base
                 $where['username'] = ['like', '%' . $param['searchText'] . '%'];
             }
             $user = new UserModel();
-            $selectResult = $user->getUsersByWhere($where, $offset, $limit);
+            $selectResult = $user->getListByWhere($where, $offset, $limit);
 
             $status = config('user_status');
 
@@ -39,7 +39,7 @@ class User extends Base
 
             }
 
-            $return['total'] = $user->getAllUsers($where);  //总数据
+            $return['total'] = $user->getCounts($where);  //总数据
             $return['rows'] = $selectResult;
 
             return json($return);
@@ -59,14 +59,12 @@ class User extends Base
             
             $param['password'] = md5($param['password']);
             $user = new UserModel();
-            $flag = $user->insertUser($param,'UserValidate');
+            $flag = $user->insert($param,'UserValidate');
 
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
 
-        $role = new RoleModel();
         $this->assign([
-            'role' => $role->getRole(),
             'status' => config('user_status')
         ]);
 
@@ -87,17 +85,15 @@ class User extends Base
             }else{
                 $param['password'] = md5($param['password']);
             }
-            $flag = $user->editUser($param,'UserValidate');
+            $flag = $user->edit($param,'UserValidate');
 
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
 
         $id = input('param.id');
-        $role = new RoleModel();
         $this->assign([
-            'user' => $user->getOneUser($id),
+            'user' => $user->getInfoById($id),
             'status' => config('user_status'),
-            'role' => $role->getRole()
         ]);
         return $this->fetch();
     }
@@ -108,7 +104,7 @@ class User extends Base
         $id = input('param.id');
 
         $role = new UserModel();
-        $flag = $role->delUser($id);
+        $flag = $role->del($id);
         return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
     }
 }

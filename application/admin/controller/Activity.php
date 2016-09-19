@@ -1,11 +1,11 @@
 <?php
 namespace app\admin\controller;
+
 use app\admin\model\ActivityModel;
 use app\admin\model\RoleModel;
-use Qiniu\Auth;
+
 class Activity extends Base
 {
-
     //活动列表
     public function index()
     {
@@ -21,15 +21,19 @@ class Activity extends Base
                 $where['act_name'] = ['like', '%' . $param['searchText'] . '%'];
             }
             $activity = new ActivityModel();
-            $selectResult = $activity->getactivitysByWhere($where, $offset, $limit);
+            $selectResult = $activity->getListByWhere($where, $offset, $limit);
 
             foreach($selectResult as $key=>$vo){
                 $selectResult[$key]['act_create_time'] = date('Y-m-d H:i:s', $vo['act_create_time']);
-                $selectResult[$key]['act_release_time'] = date('Y-m-d H:i:s', $vo['act_release_time']);
                 $selectResult[$key]['act_start_time'] = date('Y-m-d H:i:s', $vo['act_start_time']);
                 $selectResult[$key]['act_end_time'] = date('Y-m-d H:i:s', $vo['act_end_time']);
                 if($vo['act_from_id'] == 0){
                     $selectResult[$key]['act_from_id'] = '官方';
+                }
+                if($vo['act_release_time'] == 0){
+                    $selectResult[$key]['act_release_time'] = '未发布';
+                }else{
+                    $selectResult[$key]['act_release_time'] =  date('Y-m-d H:i:s', $vo['act_release_time']);
                 }
                 $operate = [
                     '编辑' => url('activity/edit', ['id' => $vo['id']]),
@@ -40,7 +44,7 @@ class Activity extends Base
 
             }
 
-            $return['total'] = $activity->getAllactivitys($where);  //总数据
+            $return['total'] = $activity->getCounts($where);  //总数据
             $return['rows'] = $selectResult;
 
             return json($return);
@@ -56,18 +60,19 @@ class Activity extends Base
             $param = parseParams($param['data']);
             $param['act_start_time'] = strtotime($param['act_start_time']);
             $param['act_end_time'] = strtotime($param['act_end_time']);
-            $param['act_release_time'] = strtotime($param['act_release_time']);
             $param['act_create_time'] = time();
+            $param['act_from_id'] = 0;
+            if($param['activity_status'] == 1) {
+                $param['act_release_time'] = time();
+            } elseif($param['activity_status'] == 2) {
+                $param['act_release_time'] = 0;
+            }
+            unset($param['activity_status']);
             $activity = new activityModel();
-            $flag = $activity->insertactivity($param,'ActivityValidate');
+            $flag = $activity->insert($param,'ActivityValidate');
 
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
-
-        $role = new RoleModel();
-        $this->assign([
-            'role' => $role->getRole(),
-        ]);
 
         return $this->fetch();
     }
@@ -83,19 +88,29 @@ class Activity extends Base
             $param = parseParams($param['data']);
             $param['act_start_time'] = strtotime($param['act_start_time']);
             $param['act_end_time'] = strtotime($param['act_end_time']);
-            $param['act_release_time'] = strtotime($param['act_release_time']);
             $param['act_create_time'] = time();
-            $flag = $activity->editactivity($param,'ActivityValidate');
+            $param['act_from_id'] = 0;
+            if($param['activity_status'] == 1) {
+                $param['act_release_time'] = time();
+            } elseif($param['activity_status'] == 2) {
+                $param['act_release_time'] = 0;
+            }
+            unset($param['activity_status']);
+            $flag = $activity->edit($param,'ActivityValidate');
 
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
 
         $id = input('param.id');
-        $info =  $activity->getOneactivity($id);
+        $info =  $activity->getInfoById($id);
         $info['act_start_time'] = date('Y-m-d H:i:s', $info['act_start_time']);
-        $info['act_release_time'] = date('Y-m-d H:i:s', $info['act_release_time']);
         $info['act_end_time'] = date('Y-m-d H:i:s', $info['act_end_time']);
         $info['act_create_time'] = date('Y-m-d H:i:s', $info['act_create_time']);
+        if($info['act_release_time'] == 0) {
+            $info['activity_status'] = 2;
+        } else {
+            $info['activity_status'] = 1;
+        }
         $this->assign([
             'activity' => $info
         ]);
@@ -108,7 +123,7 @@ class Activity extends Base
         $id = input('param.id');
 
         $role = new activityModel();
-        $flag = $role->delactivity($id);
+        $flag = $role->del($id);
         return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
     }
 }

@@ -2,7 +2,6 @@
 namespace app\admin\controller;
 
 use app\admin\model\NoticeModel;
-use app\admin\model\RoleModel;
 
 class Notice extends Base
 {
@@ -21,14 +20,18 @@ class Notice extends Base
                 $where['notice_title'] = ['like', '%' . $param['searchText'] . '%'];
             }
             $notice = new NoticeModel();
-            $selectResult = $notice->getNoticesByWhere($where, $offset, $limit);
+            $selectResult = $notice->getListByWhere($where, $offset, $limit);
 
 
             foreach($selectResult as $key=>$vo){
 
-                $selectResult[$key]['notice_release_time'] = date('Y-m-d H:i:s', $vo['notice_release_time']);
                 if($vo['notice_from_id'] == 0){
                     $selectResult[$key]['notice_from_id'] = '官方';
+                }
+                if($vo['notice_release_time'] == 0){
+                    $selectResult[$key]['notice_release_time'] = '未发布';
+                }else{
+                    $selectResult[$key]['notice_release_time'] =  date('Y-m-d H:i:s', $vo['notice_release_time']);
                 }
 
                 $operate = [
@@ -40,7 +43,7 @@ class Notice extends Base
 
             }
 
-            $return['total'] = $notice->getAllNotices($where);  //总数据
+            $return['total'] = $notice->getCounts($where);  //总数据
             $return['rows'] = $selectResult;
 
             return json($return);
@@ -57,23 +60,26 @@ class Notice extends Base
             $param = input('param.');
           
             $param = parseParams($param['data']);
-            $param['notice_release_time'] = strtotime($param['notice_release_time']);
+            $param['notice_from_id'] = 0;
+            if($param['notice_status'] == 1) {
+                $param['notice_release_time'] = time();
+            } elseif($param['notice_tatus'] == 2) {
+                $param['notice_release_time'] = 0;
+            }
+            unset($param['notice_status']);
             $notice = new NoticeModel();
-            $flag = $notice->insertNotice($param,'NoticeValidate');
+            $flag = $notice->insert($param,'NoticeValidate');
            
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
-
-        $role = new RoleModel();
         $this->assign([
-            'role' => $role->getRole(),
             'status' => config('notice_status')
         ]);
 
         return $this->fetch();
     }
 
-    //编辑角色
+    //编辑广告
     public function edit()
     {
         $notice = new NoticeModel();
@@ -82,15 +88,24 @@ class Notice extends Base
 
             $param = input('post.');
             $param = parseParams($param['data']);
-            $param['notice_release_time'] = strtotime($param['notice_release_time']);
-            $flag = $notice->editNotice($param,'NoticeValidate');
+            if($param['notice_status'] == 1) {
+                $param['notice_release_time'] = time();
+            } elseif($param['notice_status'] == 2) {
+                $param['notice_release_time'] = 0;
+            }
+            unset($param['notice_status']);
+            $flag = $notice->edit($param,'NoticeValidate');
 
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
 
         $id = input('param.id');
-        $info =  $notice->getOneNotice($id);
-        $info['notice_release_time'] = date('Y-m-d H:i:s', $info['notice_release_time']);
+        $info =  $notice->getInfoById($id);
+        if($info['notice_release_time'] == 0) {
+            $info['notice_status'] = 2;
+        } else {
+            $info['notice_status'] = 1;
+        }
         $this->assign([
             'notice' => $info
         ]);
@@ -103,7 +118,7 @@ class Notice extends Base
         $id = input('param.id');
 
         $role = new NoticeModel();
-        $flag = $role->delNotice($id);
+        $flag = $role->del($id);
         return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
     }
 }

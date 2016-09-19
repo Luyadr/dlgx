@@ -2,82 +2,97 @@
 namespace app\admin\controller;
 
 use app\admin\model\VideoModel;
-use app\admin\model\RoleModel;
 
 class Video extends Base
 {
-    //用户列表
     public function index()
     {
         if(request()->isAjax()){
-
             $param = input('param.');
-
             $limit = $param['pageSize'];
             $offset = ($param['pageNumber'] - 1) * $limit;
-
             $where = [];
             if (isset($param['searchText']) && !empty($param['searchText'])) {
                 $where['video_name'] = ['like', '%' . $param['searchText'] . '%'];
             }
             $video = new VideoModel();
-            $selectResult = $video->getVideosByWhere($where, $offset, $limit);
-
-
+            $selectResult = $video->getListByWhere($where, $offset, $limit);
             foreach($selectResult as $key=>$vo){
-
-                $selectResult[$key]['video_release_time'] = date('Y-m-d H:i:s', $vo['video_release_time']);
-
+                if($vo['video_release_time'] == 0) {
+                    $selectResult[$key]['video_release_time'] = '未发布';
+                } else {
+                    $selectResult[$key]['video_release_time'] = date('Y-m-d H:i:s', $vo['video_release_time']);
+                }
                 $operate = [
-                    '编辑' => url('video/edit', ['id' => $vo['id']]),
-//                    '删除' => "javascript:del('".$vo['id']."')"
+                    '编辑' => url('video/edit', ['id' => $vo['id']])
                 ];
-
                 $selectResult[$key]['operate'] = showOperate($operate);
-
             }
-
-            $return['total'] = $video->getAllVideos($where);  //总数据
+            $return['total'] = $video->getCounts($where);
             $return['rows'] = $selectResult;
 
             return json($return);
         }
-
         return $this->fetch();
     }
-
-
-    //编辑视频
-    public function edit()
+    //添加视频
+    public function add()
     {
-        $video = new VideoModel();
-
         if(request()->isPost()){
-
-            $param = input('post.');
+            $param = input('param.');
             $param = parseParams($param['data']);
-            $param['video_release_time'] = strtotime($param['video_release_time']);
-            $flag = $video->editVideo($param,'VideoValidate');
+            $param['video_create_time'] = time();
+            if($param['video_status'] == 1) {
+                $param['video_release_time'] = time();
+            } elseif($param['video_status'] == 2) {
+                $param['video_release_time'] = 0;
+            }
+            unset($param['video_status']);
+            $video = new VideoModel();
+            $flag = $video->insert($param, 'VideoValidate');
 
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
 
+        return $this->fetch();
+    }
+    //编辑视频
+    public function edit()
+    {
+        $video = new VideoModel();
+        if(request()->isPost()){
+            $param = input('post.');
+            $param = parseParams($param['data']);
+            if($param['video_status'] == 1) {
+                $param['video_release_time'] = time();
+            } elseif($param['video_status'] == 2) {
+                $param['video_release_time'] = 0;
+            }
+            unset($param['video_status']);
+            $flag = $video->edit($param, 'VideoValidate');
+
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
         $id = input('param.id');
-        $info = $video->getOneVideo($id);
-        $info['video_release_time'] = date('Y-m-d H:i:s', $info['video_release_time']);
+        $info = $video->getInfoById($id);
+        if($info['video_release_time'] == 0) {
+            $info['video_status'] = 2;
+        } else {
+            $info['video_status'] = 1;
+        }
         $this->assign([
             'video' => $info
         ]);
+
         return $this->fetch();
     }
-
     //删除角色
     public function del()
     {
         $id = input('param.id');
+        $video = new VideoModel();
+        $flag = $video->del($id);
 
-        $role = new VideoModel();
-        $flag = $role->delVideo($id);
         return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
     }
 }

@@ -1,14 +1,11 @@
 <?php
-/**
- * 生成操作按钮
- * @param array $operate 操作按钮数组
- */
+
+// 生成操作按钮
 function showOperate($operate = [])
 {
     if(empty($operate)){
         return '';
     }
-
     $option = <<<EOT
     <div class="btn-group">
     <button class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -16,19 +13,14 @@ function showOperate($operate = [])
     </button>
     <ul class="dropdown-menu">
 EOT;
-
     foreach($operate as $key=>$vo){
         $option .= '<li><a href="'.$vo.'">'.$key.'</a></li>';
     }
     $option .= '</ul></div>';
-
     return $option;
 }
 
-/**
- * 将字符解析成数组
- * @param $str
- */
+// 将字符解析成数组
 function parseParams($str)
 {
     $arrParams = [];
@@ -36,45 +28,33 @@ function parseParams($str)
     return $arrParams;
 }
 
-/**
- * 子孙树 用于菜单整理
- * @param $param
- * @param int $pid
- */
+// 子孙树，用于菜单整理
 function subTree($param, $pid = 0)
 {
     static $res = [];
-
     foreach($param as $key=>$vo){
         if( $pid == $vo['pid'] ){
             $res[] = $vo;
             subTree($param, $vo['id']);
         }
     }
-
     return $res;
 }
 
-/**
- * 整理菜单方法
- * @param $param
- * @return array
- */
+// 整理菜单方法
 function prepareMenu($param)
 {
-    $parent = []; //父类
-    $child = [];  //子类
-
+    $parent = []; // 父类
+    $child = [];  // 子类
     foreach($param as $key=>$vo){
         if($vo['father_node_id'] == 0){
             $vo['href'] = '#';
             $parent[] = $vo;
         }else{
-            $vo['href'] = url($vo['controller_name'] .'/'. $vo['action_name']); //跳转地址
+            $vo['href'] = url($vo['controller_name'] .'/'. $vo['action_name']);
             $child[] = $vo;
         }
     }
-
     foreach($parent as $key=>$vo){
         foreach($child as $k=>$v){
             if($v['father_node_id'] == $vo['id']){
@@ -83,14 +63,10 @@ function prepareMenu($param)
         }
     }
     unset($child);
-
     return $parent;
 }
 
-/**
- * 解析备份sql文件
- * @param $file
- */
+// 解析备份sql文件
 function analysisSql($file)
 {
     // sql文件包含的sql语句数组
@@ -119,11 +95,9 @@ function analysisSql($file)
             // 跳过本次
             continue;
         }
-
         $sqls [] = $line;
     }
     fclose ( $f );
-
     return $sqls;
 }
 

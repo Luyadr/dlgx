@@ -12,7 +12,6 @@ namespace app\admin\controller;
 
 use app\admin\model\NodeModel;
 use app\admin\model\RoleModel;
-use app\admin\model\UserType;
 
 class Role extends Base
 {
@@ -31,7 +30,7 @@ class Role extends Base
                 $where['role_name'] = ['like', '%' . $param['searchText'] . '%'];
             }
             $user = new RoleModel();
-            $selectResult = $user->getRoleByWhere($where, $offset, $limit);
+            $selectResult = $user->getListByWhere($where, $offset, $limit);
             foreach($selectResult as $key=>$vo){
 
                 if(1 == $vo['id']){
@@ -42,13 +41,13 @@ class Role extends Base
                 $operate = [
                     '编辑' => url('role/edit', ['id' => $vo['id']]),
                     '删除' => "javascript:del('".$vo['id']."')",
-                    '分配权限' => "javascript:givepermission('".$vo['id']."')"
+                    '分配权限' => "javascript:givePermission('".$vo['id']."')"
                 ];
                 $selectResult[$key]['operate'] = showOperate($operate);
 
             }
 
-            $return['total'] = $user->getAllRole($where);  //总数据
+            $return['total'] = $user->getCounts($where);  //总数据
             $return['rows'] = $selectResult;
 
             return json($return);
@@ -66,7 +65,7 @@ class Role extends Base
             $param = parseParams($param['data']);
 
             $role = new RoleModel();
-            $flag = $role->insertRole($param,'RoleValidate');
+            $flag = $role->insert($param,'RoleValidate');
 
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
@@ -84,7 +83,7 @@ class Role extends Base
             $param = input('post.');
             $param = parseParams($param['data']);
 
-            $flag = $role->editRole($param,'RoleValidate');
+            $flag = $role->edit($param,'RoleValidate');
 
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
@@ -102,12 +101,12 @@ class Role extends Base
         $id = input('param.id');
 
         $role = new RoleModel();
-        $flag = $role->delRole($id);
+        $flag = $role->del($id);
         return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
     }
 
     //分配权限
-    public function givepermission()
+    public function givePermission()
     {
         $param = input('param.');
         $node = new NodeModel();
@@ -124,8 +123,8 @@ class Role extends Base
                 'id' => $param['id'],
                 'permission_node' => $param['permission_node']
             ];
-            $user = new UserType();
-            $flag = $user->editAccess($doparam);
+            $role = new RoleModel();
+            $flag = $role->editAccess($doparam);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }

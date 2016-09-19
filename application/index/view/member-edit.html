@@ -38,17 +38,17 @@
 				</div>
 				<div class="uinfo-item">
 					<span>专业班级</span>
-					<input type="text" value="{$memberInfo.member_class}" placeholder="请输入您所在的专业班级" name="member_class">
+					<input style="width: 180px;" type="text" value="{$memberInfo.member_class}" placeholder="请输入您所在的专业班级" name="member_class">
 				</div>
 				<div class="scode-send-wrap uinfo-item">
 					<span>手机号码</span>
-					<input type="text" value="{$memberInfo.member_tel}" placeholder="请输入您的手机号码" name="member_tel">
-					<!--<button>发送验证码</button>-->
+					<input style="width: 120px;" type="text" value="{$memberInfo.member_tel}" placeholder="请输入手机号码" name="member_tel">
+					<button type="button">发送验证码</button>
 				</div>
-				<!--<div class="uinfo-item">-->
-					<!--<span>验证码</span>-->
-					<!--<input type="text" placeholder="请输入您收到的验证码">-->
-				<!--</div>-->
+				<div class="uinfo-item">
+					<span>验证码</span>
+					<input type="text" placeholder="请输入收到的验证码" name="code">
+				</div>
 			</div>
 			<button class="submit">确认</button>
 		</form>
