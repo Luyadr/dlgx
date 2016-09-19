@@ -10,8 +10,8 @@
 // +----------------------------------------------------------------------
 namespace app\admin\controller;
 
-use app\admin\model\Node;
-use app\admin\model\UserType;
+use app\admin\model\NodeModel;
+use app\admin\model\RoleModel;
 
 class Role extends Base
 {
@@ -27,11 +27,10 @@ class Role extends Base
 
             $where = [];
             if (isset($param['searchText']) && !empty($param['searchText'])) {
-                $where['rolename'] = ['like', '%' . $param['searchText'] . '%'];
+                $where['role_name'] = ['like', '%' . $param['searchText'] . '%'];
             }
-            $user = new UserType();
+            $user = new RoleModel();
             $selectResult = $user->getRoleByWhere($where, $offset, $limit);
-
             foreach($selectResult as $key=>$vo){
 
                 if(1 == $vo['id']){
@@ -40,9 +39,9 @@ class Role extends Base
                 }
 
                 $operate = [
-                    '编辑' => url('role/roleEdit', ['id' => $vo['id']]),
-                    '删除' => "javascript:roleDel('".$vo['id']."')",
-                    '分配权限' => "javascript:giveQx('".$vo['id']."')"
+                    '编辑' => url('role/edit', ['id' => $vo['id']]),
+                    '删除' => "javascript:del('".$vo['id']."')",
+                    '分配权限' => "javascript:givepermission('".$vo['id']."')"
                 ];
                 $selectResult[$key]['operate'] = showOperate($operate);
 
@@ -58,15 +57,15 @@ class Role extends Base
     }
 
     //添加角色
-    public function roleAdd()
+    public function add()
     {
         if(request()->isPost()){
 
             $param = input('param.');
             $param = parseParams($param['data']);
 
-            $role = new UserType();
-            $flag = $role->insertRole($param);
+            $role = new RoleModel();
+            $flag = $role->insertRole($param,'RoleValidate');
 
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
@@ -75,46 +74,46 @@ class Role extends Base
     }
 
     //编辑角色
-    public function roleEdit()
+    public function edit()
     {
-        $role = new UserType();
+        $role = new RoleModel();
 
         if(request()->isPost()){
 
             $param = input('post.');
             $param = parseParams($param['data']);
 
-            $flag = $role->editRole($param);
+            $flag = $role->editRole($param,'RoleValidate');
 
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
 
         $id = input('param.id');
         $this->assign([
-            'role' => $role->getOneRole($id)
+            'role' => $role->getRoleInfo($id)
         ]);
         return $this->fetch();
     }
 
     //删除角色
-    public function roleDel()
+    public function del()
     {
         $id = input('param.id');
 
-        $role = new UserType();
+        $role = new RoleModel();
         $flag = $role->delRole($id);
         return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
     }
 
     //分配权限
-    public function giveAccess()
+    public function givepermission()
     {
         $param = input('param.');
-        $node = new Node();
+        $node = new NodeModel();
         //获取现在的权限
         if('get' == $param['type']){
 
-            $nodeStr = $node->getNodeInfo($param['id']);
+            $nodeStr = $node->info($param['id']);
             return json(['code' => 1, 'data' => $nodeStr, 'msg' => 'success']);
         }
         //分配新权限
@@ -124,7 +123,7 @@ class Role extends Base
                 'id' => $param['id'],
                 'rule' => $param['rule']
             ];
-            $user = new UserType();
+            $user = new RoleModel();
             $flag = $user->editAccess($doparam);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }

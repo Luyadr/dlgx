@@ -1,0 +1,76 @@
+{include file="common/header" title="我的活动" keywords="大乐个学" description="大乐个学" /}
+
+	<style>body {background-color: #f2f2f2}</style>
+
+	<div id="act-top">
+		<button class="round-button active">我参加的</button><button class="round-button">我发起的</button>
+	</div>
+
+	{if empty($activityList)}
+	<div id="none-club" class="center">
+		<p>您还没有参加任何活动哦</p>
+		<a href="{:url('index/index')}">点击参加</a>
+	</div>
+	{else}
+	<div id="act-list">
+		{foreach name="activityList" item="vo"}
+		<div id="{$vo.act_id}" class="act-item clearfix">
+			<a href="{:url('activity/index', ['act_id' => $vo.act_id])}">
+			<div class="act-img"><img src="{$vo.act_list_img}" alt=""></div>
+			</a>
+			<div class="act-info">
+				<a href="{:url('activity/index', ['act_id' => $vo.act_id])}">
+				<h2 class="act-title one-line">{$vo.act_name}</h2>
+				<div class="act-organize clearfix">
+					<img src="__IMAGES__/dlgx_round.jpg" alt="">
+					<span class="one-line">大乐个学</span>
+				</div>
+				<p class="act-time one-line">活动时间: {$vo.act_start_time}~{$vo.act_end_time}</p>
+				</a>
+				<div class="act-operate">
+					<input id="act-id" type="text" value="{$vo.act_id}" style="display: none;">
+					<button id="act-cancel" class="active">取消报名</button>
+					<span>{$vo.act_days}发布</span>
+					{if $vo.act_status == 1}
+					<img src="__IMAGES__/activity_before.png" alt="">
+					{elseif $vo.act_status == 2}
+					<img src="__IMAGES__/activity_ing.png" alt="">
+					{elseif $vo.act_status == 3}
+					<img src="__IMAGES__/activity_over.png" alt="">
+					{/if}
+				</div>
+			</div>
+		</div>
+		{/foreach}
+	</div>
+	{/if}
+
+	<script src="__SCRIPT__/touch.js"></script>
+	<script src="__SCRIPT__/myPop.js"></script>
+	<script>
+		$(function() {
+			$(".round-button").click(function() {
+				myalert('功能开发中~');
+			})
+		})
+	</script>
+	{if !empty($activityList)}
+	<script>
+		$("#act-cancel").click(function() {
+			$.ajax({
+				type:'POST',
+				url:"{:url('activity/cancel')}",
+				data:{'id' : $("#act-id").val()},
+				async: false,
+				success: function(data) {
+					if(0 != data.result) {
+						var id = "{$vo.act_id}";
+						$("#"+id).css('display', 'none');
+					}
+				}
+			});
+		})
+	</script>
+	{/if}
+
+{include file="common/footer" /}

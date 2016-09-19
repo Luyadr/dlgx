@@ -1,0 +1,37 @@
+{include file="common/header" title="我的社团" keywords="大乐个学" description="大乐个学" /}
+
+	<div id="act-top">
+		<button class="round-button active">我加入的</button><button class="round-button"><a href="{:url('club/clubCreated')}" style="color: #80d6c1;">我创建的</a></button>
+	</div>
+
+	{if empty($clubList)}
+	<div id="none-club" class="center">
+		<p>您还没有加入任何社团哦</p>
+		<p>快来加入一个吧</p>
+		<a href="{:url('club/select')}">加入社团</a>
+	</div>
+	{else}
+	<a href="{:url('club/select')}">
+		<div id="cselect-top"><img src="__IMAGES__/add.png" alt=""><span>点击加入更多社团~</span></div>
+	</a>
+	<div id="club-list">
+		<ul>
+			{foreach name="clubList" item="vo"}
+			<a href="{:url('club/index', ['clubId' => $vo.club_id])}">
+			<li class="club-item clearfix">
+				<div class="portrait-wrap">
+					<img class="fl portrait" src="__IMAGES__/dlgx_round.jpg" alt="">
+				</div>
+				<div class="club-info fl">
+					<h2>{$vo.club_name}</h2>
+					<h3>{$vo.club_school}</h3>
+					<p class="one-line">简介:{$vo.club_intro}</p>
+				</div>
+			</li>
+			</a>
+			{/foreach}
+		</ul>
+	</div>
+	{/if}
+
+{include file="common/footer" /}

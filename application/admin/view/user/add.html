@@ -44,11 +44,11 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">管理员角色：</label>
                             <div class="input-group col-sm-4">
-                                <select class="form-control" name="typeid" required="" aria-required="true">
+                                <select class="form-control" name="role_id" required="" aria-required="true">
                                     <option value="0">请选择</option>
                                     {if !empty($role)}
                                     {foreach name="role" item="vo"}
-                                    <option value="{$vo.id}">{$vo.rolename}</option>
+                                    <option value="{$vo.id}">{$vo.role_name}</option>
                                     {/foreach}
                                     {/if}
                                 </select>
@@ -61,7 +61,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">真是姓名：</label>
+                            <label class="col-sm-3 control-label">真实姓名：</label>
                             <div class="input-group col-sm-4">
                                 <input id="real_name" type="text" class="form-control" name="real_name" required="" aria-required="true">
 
@@ -106,7 +106,7 @@
     //表单提交
     function toVaild(){
         var jz;
-        var url = "./userAdd";
+        var url = "./add";
         $.ajax({
             type:"POST",
             url:url,

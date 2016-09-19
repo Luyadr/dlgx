@@ -21,7 +21,7 @@ class Node extends Base
 
             $where = [];
             if (isset($param['searchText']) && !empty($param['searchText'])) {
-                $where['nodename'] = ['like', '%' . $param['searchText'] . '%'];
+                $where['node_name'] = ['like', '%' . $param['searchText'] . '%'];
             }
             $node = new NodeModel();
             $selectResult = $node->getListByWhere($where, $offset, $limit);
@@ -55,8 +55,19 @@ class Node extends Base
      *
      * @return \think\Response
      */
-    public function create()
+    public function add()
     {
+		if(request()->isPost()){
+
+            $param = input('param.');
+            $param = parseParams($param['data']);
+
+            $node = new NodeModel();
+	
+            $flag = $node->insert($param,'NodeValidate');
+
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
         $node = new NodeModel();
         $this->assign([
             'node' => $node->getAllInfo(),
@@ -123,6 +134,7 @@ class Node extends Base
             'nodes' => $node->getAllInfo(),
             'node' => $node->info($id)
         ]);
+		
         return $this->fetch();
     }
 
@@ -161,7 +173,7 @@ class Node extends Base
      * @param  int  $id
      * @return \think\Response
      */
-    public function delete($id)
+    public function del($id)
     {
         $node = new NodeModel();
         $flag = $node->del($id);

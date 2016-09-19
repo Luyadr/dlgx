@@ -1,0 +1,85 @@
+{include file="common/header" title="我的信息" keywords="大乐个学" description="大乐个学" /}
+
+	<style>body {background-color: #eee}</style>
+
+	<div id="uinfo-top">完善个人信息后才能尝试更多功能哦！</div>
+
+	<div id="uinfo-detail">
+		<form id="memberForm" onsubmit="return toValid();">
+			<div id="uinfo-wrap">
+				<input type="text" value="{$memberInfo.id}" name="id" style="display: none;">
+				<div class="uinfo-item">
+					<span>姓名</span>
+					<input type="text" value="{$memberInfo.real_name}" placeholder="请输入您的真实姓名" name="real_name">
+				</div>
+				<div class="uinfo-item">
+					<span>性别</span>
+					<div class="radio-wrap">
+						<input id="uitem-man" type="radio" name="member_sex" value="1" {if $memberInfo.member_sex == 1} checked {/if}>
+						<p class="radio-temp"></p>
+						<label for="uitem-man">男</label>
+					</div>
+					<div class="radio-wrap">
+						<input id="uitem-woman" type="radio" name="member_sex" value="2" {if $memberInfo.member_sex == 2} checked {/if}>
+						<p class="radio-temp"></p>
+						<label for="uitem-woman">女</label>
+					</div>
+				</div>
+				<div class="uinfo-item">
+					<a href="javascript:;" onclick="chooseSchool();">
+						<span>学校</span>
+						<input type="text" value="{$memberInfo.member_school}" placeholder="请输入您所在的学校" name="member_school" readonly>
+						<img src="__IMAGES__/arrow_right.png" alt="">
+					</a>
+				</div>
+				<div class="uinfo-item">
+					<span>院系</span>
+					<input type="text" value="{$memberInfo.member_department}" placeholder="请输入您所在的院系" name="member_department">
+				</div>
+				<div class="uinfo-item">
+					<span>专业班级</span>
+					<input type="text" value="{$memberInfo.member_class}" placeholder="请输入您所在的专业班级" name="member_class">
+				</div>
+				<div class="scode-send-wrap uinfo-item">
+					<span>手机号码</span>
+					<input type="text" value="{$memberInfo.member_tel}" placeholder="请输入您的手机号码" name="member_tel">
+					<!--<button>发送验证码</button>-->
+				</div>
+				<!--<div class="uinfo-item">-->
+					<!--<span>验证码</span>-->
+					<!--<input type="text" placeholder="请输入您收到的验证码">-->
+				<!--</div>-->
+			</div>
+			<button class="submit">确认</button>
+		</form>
+	</div>
+	
+	<script src="__SCRIPT__/myPop.js"></script>
+	<script src="__SCRIPT__/validate.js"></script>
+	<script>
+		function chooseSchool() {
+			var url = "{:url('school/index')}";
+			url = url.replace(".html", "/memberForm/") + $('#memberForm').serialize();
+			location.href = url;
+		}
+		//表单提交
+		function toValid(){
+			$.ajax({
+				type:"POST",
+				url:"{:url('member/edit')}",
+				data:{'data' : $('#memberForm').serialize()},
+				async:false,
+				success: function(data) {
+					myalert(data.msg);
+					if(data.code == 1) {
+						$(".alert-operate").click(function() {
+							location.href = "{:url('index/index')}";
+						})
+					}
+				}
+			});
+			return false;
+		}
+	</script>
+
+{include file="common/footer" /}

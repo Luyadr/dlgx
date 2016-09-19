@@ -7,17 +7,18 @@ class Data extends Base
     public function index()
     {
         $tables = db()->query('show tables');
+		
         foreach($tables as $key=>$vo){
-            $sql = "select count(0) as alls from ".$vo['Tables_in_jianwen'];
+            $sql = "select count(0) as alls from ".$vo['Tables_in_dlgx'];
             $tables[$key]['alls'] = db()->query($sql)['0']['alls'];
 
             $operate = [
-                '备份' => "javascript:importData('".$vo['Tables_in_jianwen']."', ".$tables[$key]['alls'].")",
-                '还原' => "javascript:backData('".$vo['Tables_in_jianwen']."')"
+                '备份' => "javascript:backup('".$vo['Tables_in_dlgx']."', ".$tables[$key]['alls'].")",
+                '还原' => "javascript:recover('".$vo['Tables_in_dlgx']."')"
             ];
             $tables[$key]['operate'] = showOperate($operate);
-            if(file_exists(config('back_path') . $vo['Tables_in_jianwen'] . ".sql")){
-                $tables[$key]['ctime'] = date('Y-m-d H:i:s', filemtime(config('back_path') . $vo['Tables_in_jianwen'] . ".sql"));
+            if(file_exists(config('back_path') . $vo['Tables_in_dlgx'] . ".sql")){
+                $tables[$key]['ctime'] = date('Y-m-d H:i:s', filemtime(config('back_path') . $vo['Tables_in_dlgx'] . ".sql"));
             }else{
                 $tables[$key]['ctime'] = '无';
             }
@@ -31,7 +32,7 @@ class Data extends Base
     }
 
     //备份数据
-    public function importData()
+    public function backup()
     {
         set_time_limit(0);
         $table = input('param.table');
@@ -64,7 +65,7 @@ class Data extends Base
     }
 
     //还原数据
-    public function backData()
+    public function recover()
     {
         set_time_limit(0);
         $table = input('param.table');
