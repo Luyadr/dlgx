@@ -21,14 +21,37 @@ class NodeModel extends BaseModel
 
         return $menu;
     }
-	
+
    public function getAllInfo()
    {
 	     return $this->select();
    }
-   public function info($id)
-   {
-	     return $this->where('id', $id)->find();
-   }
+    /**
+     * 获取节点数据
+     */
+    public function getNodeInfo($id)
+    {
+        $result = $this->field('id,node_name,father_node_id')->select();
+        $str = "";
+
+        $role = new UserType();
+        $rule = $role->getRuleById($id);
+
+        if(!empty($rule)){
+            $rule = explode(',', $rule);
+        }
+        foreach($result as $key=>$vo){
+            $str .= '{ "id": "' . $vo['id'] . '", "pId":"' . $vo['father_node_id'] . '", "name":"' . $vo['node_name'].'"';
+
+            if(!empty($rule) && in_array($vo['id'], $rule)){
+                $str .= ' ,"checked":1';
+            }
+
+            $str .= '},';
+
+        }
+
+        return "[" . substr($str, 0, -1) . "]";
+    }
 
 }
