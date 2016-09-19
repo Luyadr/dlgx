@@ -1,102 +1,127 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<meta name="renderer" content="webkit|ie-comp|ie-stand">
-	<meta name="keywords" content="[keywords]" />
-	<meta name="description" content="[description]"/>
-	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-	<meta http-equiv="Cache-Control" content="no-transform" />
-	<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-	<!--[if lte IE 9]>
-	<link rel="stylesheet" type="text/css" href="__CSS__/IE/ie.css" />
-	<![endif]-->
-
-	<!--[if IE 9]>
-	<script type="text/javascript" src="__STATIC__/PIE-2.0beta1/PIE_IE9.js"></script>
-	<link rel="stylesheet" type="text/css" href="__CSS__/IE/ie9.css" />
-	<![endif]-->
-
-	<!--[if lt IE 9]>
-	<script type="text/javascript" src="__JS__/html5.js"></script>
-	<script type="text/javascript" src="__STATIC__/PIE-2.0beta1/PIE_IE678.js"></script>
-	<link rel="stylesheet" type="text/css" href="__CSS__/IE/ie678.css" />
-	<![endif]-->
-
-	<title>[title]</title>
-	<link rel="stylesheet" href="__CSS__/core/core.css">
-	<link rel="stylesheet" href="__CSS__/style.css">
-	<script type="text/javascript" src="__JS__/zepto.min.js"></script>
-</head>
-<body>
+{include file="common/header" title="首页" keywords="大乐个学" description="大乐个学" /}
+	
 	<style>body {background-color: #f2f2f2}</style>
 
 	<div id="act-top" >
 		<button class="round-button active">官方活动</button><button class="round-button">社团活动</button>
 	</div>
+
+	{if !empty($noticeList)}
 	<div id="notice-wrap">
+		{foreach name="noticeList" item="vo"}
 		<div id="notice-head" class="clearfix">
-			<p class="fl"><span>[公告]</span>成员须知</p>
-			<p class="fr">路三三 2016年8月26日</p>
+			<p class="fl"><span>[公告]</span>{$vo.notice_title}</p>
+			<p class="fr">{$vo.notice_release_time}</p>
 		</div>
-		<div id="notice-body">
-			各位同学，进入社团请实名，格式按照“学院+姓名”，如理学院-库三三。各位同学，进入社团请实名，格式按照“学院+姓名”，如理学院-库三三。
-		</div>
+		<div id="notice-body">{$vo.notice_content}</div>
+		{/foreach}
 	</div>
+	{/if}
 	
 	<div id="act-list" class="pre-navbt">
+		{if !empty($activityList)}
+		{foreach name="activityList" item="vo"}
 		<div class="act-item clearfix">
-			<div class="act-img"><img src="__PUBLIC__/images/activity1.png" alt=""></div>
+			<a href="{:url('activity/index', ['act_id' => $vo.id])}">
+				<div class="act-img"><img src="{$vo.act_list_img}" alt=""></div>
+			</a>
 			<div class="act-info">
-				<h2 class="act-title one-line">
-					<a href="{:url('Index/actdetail')}">蒙牛全明星~早间青春SHOW</a>
-				</h2>
+				<a href="{:url('activity/index', ['act_id' => $vo.id])}">
+				<h2 class="act-title one-line">{$vo.act_name}</h2>
 				<div class="act-organize clearfix">
-					<img src="__PUBLIC__/images/actorg1.png" alt="">
-					<span class="one-line">蒙牛早餐奶(浙江工业大学)</span>
+					<img src="__IMAGES__/dlgx_round.jpg" alt="">
+					<span class="one-line">大乐个学</span>
 				</div>
-				<p class="act-time one-line">活动时间: 2016.9.2 - 9.30</p>
+				<p class="act-time one-line">活动时间: {$vo.act_start_time}~{$vo.act_end_time}</p>
+				</a>
 				<div class="act-operate">
-					<button class="active">社团互助</button>
-					<span>一天前发布</span>
-					<img src="__PUBLIC__/images/activity_ing.png" alt="">
+					<input id="act-id" type="text" value="{$vo.id}" style="display: none;">
+					{if $vo.act_status == 1}
+					<button class="active" style="background-color: grey;">未开始</button>
+					<img src="__IMAGES__/activity_before.png" alt="">
+					{elseif $vo.act_status == 2}
+						<button id="apply" class="active" {if $vo.act_apply_status == 1} style="display: none;" {/if}>立即报名</button>
+						<button id="cancel" class="active" {if $vo.act_apply_status == 0} style="display: none;" {/if}>取消报名</button>
+						<img src="__IMAGES__/activity_ing.png" alt="">
+					{elseif $vo.act_status == 3}
+					<button class="active" style="background-color: grey;">已结束</button>
+					<img src="__IMAGES__/activity_over.png" alt="">
+					{/if}
+					<span>{$vo.act_days}发布</span>
 				</div>
 			</div>
 		</div>
+		{/foreach}
+		{/if}
+
+		{if !empty($videoList)}
+		{foreach name="videoList" item="vo"}
 		<div class="act-item">
 			<div class="act-video">
-				<video src="__PUBLIC__/video/v1.mp4" poster="__PUBLIC__/images/poster1.png" controls></video>
-				<p><span class="fl one-line">因为青春</span><span class="fr">2.33</span></p>
+				<video src="{$vo.video_url}" poster="__IMAGES__/video.png" controls></video>
+				<p><span class="fl one-line">{$vo.video_name}</span><span class="fr"></span></p>
 			</div>
 			<div class="video-bottom">
-				<img src="__PUBLIC__/images/actorg1.png" alt="">
-				<span>大了个学</span>
-				<span class="fr">8月15日发布</span>
+				<img src="__IMAGES__/dlgx_round.jpg" alt="">
+				<span>大乐个学</span>
+				<span class="fr">{$vo.video_release_time}发布</span>
 			</div>
 		</div>
+		{/foreach}
+		{/if}
 	</div>
+
 	<div class="nav-bottom">
-		<div class="navbt-item active"><img src="__PUBLIC__/images/home.png" alt=""><span>首页</span>
-		</div>
-		<a href="{:url('Index/user')}">
-			<div class="navbt-item"><img src="__PUBLIC__/images/person_white.png" alt=""><span>我的</span>
-			</div>
+		<div class="navbt-item active"><img src="__IMAGES__/home.png" alt=""><span>首页</span></div>
+		<a href="{:url('member/index')}">
+			<div class="navbt-item"><img src="__IMAGES__/person_white.png" alt=""><span>我的</span></div>
 		</a>
 	</div>
 
-
+	<script src="__SCRIPT__/myPop.js"></script>
 	<script>
 		$(function() {
 			$(".round-button").click(function() {
-				$(this).addClass('active');
-				$(this).siblings().removeClass('active');
+				myalert('功能开发中~');
 			});
 			$(".act-video > p").click(function(){
 				$(this).css('bottom','-40px');
+			});
+			$("#apply").click(function() {
+				$.ajax({
+					type:'POST',
+					url:"{:url('activity/join')}",
+					data:{'id' : $("#act-id").val()},
+					async: false,
+					success: function(data) {
+						if(0 > data.flag) {
+							location.href = "{:url('member/edit')}";
+						} else if(0 == data.flag) {
+							myalert('您已经报过名了！');
+						} else {
+							$("#apply").css('display', 'none');
+							$("#cancel").css('display', '');
+							myalert('报名成功！');
+						}
+					}
+				});
+			});
+			$("#cancel").click(function() {
+				$.ajax({
+					type:'POST',
+					url:"{:url('activity/cancel')}",
+					data:{'id' : $("#act-id").val()},
+					async: false,
+					success: function(data) {
+						if(0 != data.flag) {
+							$("#cancel").css('display', 'none');
+							$("#apply").css('display', '');
+							myalert('报名已取消！');
+						}
+					}
+				});
 			})
 		})
 	</script>
-</body>
-</html>
+
+{include file="common/footer" /}

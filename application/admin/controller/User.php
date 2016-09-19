@@ -2,7 +2,7 @@
 namespace app\admin\controller;
 
 use app\admin\model\UserModel;
-use app\admin\model\UserType;
+use app\admin\model\RoleModel;
 
 class User extends Base
 {
@@ -31,8 +31,8 @@ class User extends Base
                 $selectResult[$key]['status'] = $status[$vo['status']];
 
                 $operate = [
-                    '编辑' => url('user/userEdit', ['id' => $vo['id']]),
-                    '删除' => "javascript:userDel('".$vo['id']."')"
+                    '编辑' => url('user/edit', ['id' => $vo['id']]),
+                    '删除' => "javascript:del('".$vo['id']."')"
                 ];
 
                 $selectResult[$key]['operate'] = showOperate($operate);
@@ -49,32 +49,32 @@ class User extends Base
     }
 
     //添加用户
-    public function userAdd()
+    public function add()
     {
         if(request()->isPost()){
 
             $param = input('param.');
-            var_dump($param);
+          
             $param = parseParams($param['data']);
-            var_dump($param);
+            
             $param['password'] = md5($param['password']);
             $user = new UserModel();
-            //$flag = $user->insertUser($param);
+            $flag = $user->insertUser($param,'UserValidate');
 
-            //return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
 
-        $role = new UserType();
+        $role = new RoleModel();
         $this->assign([
             'role' => $role->getRole(),
             'status' => config('user_status')
         ]);
 
-        //return $this->fetch();
+        return $this->fetch();
     }
 
-    //编辑角色
-    public function userEdit()
+    //编辑用户
+    public function edit()
     {
         $user = new UserModel();
 
@@ -87,13 +87,13 @@ class User extends Base
             }else{
                 $param['password'] = md5($param['password']);
             }
-            $flag = $user->editUser($param);
+            $flag = $user->editUser($param,'UserValidate');
 
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
 
         $id = input('param.id');
-        $role = new UserType();
+        $role = new RoleModel();
         $this->assign([
             'user' => $user->getOneUser($id),
             'status' => config('user_status'),
@@ -102,8 +102,8 @@ class User extends Base
         return $this->fetch();
     }
 
-    //删除角色
-    public function UserDel()
+    //删除用户
+    public function del()
     {
         $id = input('param.id');
 

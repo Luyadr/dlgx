@@ -1,125 +1,108 @@
--- phpMyAdmin SQL Dump
--- version 4.5.5.1
--- http://www.phpmyadmin.net
---
--- Host: 127.0.0.1
--- Generation Time: 2016-09-13 08:16:23
--- 服务器版本： 5.7.11
--- PHP Version: 5.6.19
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Database: `dlgx`
---
-
--- --------------------------------------------------------
-
---
--- 表的结构 `dlgx_activity`
---
-
 CREATE TABLE `dlgx_activity` (
   `id` int(11) NOT NULL,
-  `act_name` varchar(255) NOT NULL COMMENT '名称',
-  `act_intro` varchar(255) NOT NULL COMMENT '简介',
-  `act_list_img` varchar(255) NOT NULL COMMENT '列表图',
-  `act_detail_img` varchar(255) NOT NULL COMMENT '详情图',
+  `act_name` varchar(255) NOT NULL COMMENT '活动名称',
+  `act_intro` varchar(255) NOT NULL COMMENT '活动简介',
+  `act_list_img` varchar(255) NOT NULL COMMENT '活动列表图',
+  `act_detail_img` varchar(255) NOT NULL COMMENT '活动详情图',
+  `act_create_time` int(11) NOT NULL COMMENT '创建时间',
   `act_release_time` int(11) NOT NULL DEFAULT '0' COMMENT '发布时间',
-  `act_start_time` int(11) NOT NULL DEFAULT '0' COMMENT '开始时间',
-  `act_end_time` int(11) NOT NULL DEFAULT '0' COMMENT '结束时间',
-  `act_address` varchar(255) NOT NULL COMMENT '地点',
-  `act_money` int(11) NOT NULL DEFAULT '0' COMMENT '费用',
-  `act_member_num` int(11) NOT NULL DEFAULT '0' COMMENT '会员数量',
-  `act_from_id` int(11) NOT NULL DEFAULT '0' COMMENT '发布社团ID，默认0为官方',
-  `act_status` int(11) NOT NULL DEFAULT '1' COMMENT '状态：1.发布2.不发布',
-  `act_corp_id` varchar(255) NOT NULL COMMENT '承办社团ID'
+  `act_start_time` int(11) NOT NULL COMMENT '开始时间',
+  `act_end_time` int(11) NOT NULL COMMENT '结束时间',
+  `act_address` varchar(255) NOT NULL COMMENT '活动地点',
+  `act_money` int(11) NOT NULL COMMENT '活动费用',
+  `act_from_id` int(11) NOT NULL DEFAULT '0' COMMENT '发布社团ID，0表示官方'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- 转存表中的数据 `dlgx_activity`
---
+INSERT INTO `dlgx_activity` (`id`, `act_name`, `act_intro`, `act_list_img`, `act_detail_img`, `act_create_time`, `act_release_time`, `act_start_time`, `act_end_time`, `act_address`, `act_money`, `act_from_id`) VALUES
+(2, '大乐个学上线啦！', '大乐个学上线啦！', 'http://odfgs4sbe.bkt.clouddn.com/activity_list.png', 'http://odfgs4sbe.bkt.clouddn.com/activity_detail.png', 0, 1472641999, 1472572800, 1476028800, '大乐个学', 0, 0);
 
-INSERT INTO `dlgx_activity` (`id`, `act_name`, `act_intro`, `act_list_img`, `act_detail_img`, `act_release_time`, `act_start_time`, `act_end_time`, `act_address`, `act_money`, `act_member_num`, `act_from_id`, `act_status`, `act_corp_id`) VALUES
-(2, '大乐个学', '大乐个学大乐个学大乐个学大乐个学大乐个学', 'http://od6cy404z.bkt.clouddn.com/41871201609091931246731.png', '0', 1472641999, 1472572800, 1472659199, '大乐个学大乐个学大乐个学', 5000, 0, 0, 1, '');
+CREATE TABLE `dlgx_act_join` (
+  `id` int(11) NOT NULL,
+  `act_id` int(11) NOT NULL COMMENT '活动ID',
+  `member_id` int(11) NOT NULL COMMENT '会员ID',
+  `join_time` int(11) NOT NULL COMMENT '参加时间'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- 表的结构 `dlgx_area`
---
+INSERT INTO `dlgx_act_join` (`id`, `act_id`, `member_id`, `join_time`) VALUES
+(22, 2, 3, 1474100334);
 
 CREATE TABLE `dlgx_area` (
   `id` int(11) NOT NULL,
   `area_name` varchar(255) NOT NULL COMMENT '地区名称'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- 转存表中的数据 `dlgx_area`
---
-
 INSERT INTO `dlgx_area` (`id`, `area_name`) VALUES
 (1, '芜湖'),
 (2, '杭州');
 
--- --------------------------------------------------------
-
---
--- 表的结构 `dlgx_corporation`
---
-
-CREATE TABLE `dlgx_corporation` (
+CREATE TABLE `dlgx_club` (
   `id` int(11) NOT NULL,
-  `corp_name` varchar(255) NOT NULL COMMENT '名称',
-  `corp_img` varchar(255) NOT NULL COMMENT '团标',
-  `corp_level` int(11) NOT NULL DEFAULT '1' COMMENT '级别：1.兴趣社团2.院级组织3.校级组织',
-  `corp_intro` varchar(255) NOT NULL COMMENT '简介',
-  `corp_status` int(1) NOT NULL DEFAULT '1' COMMENT '状态：1.待审核2.通过',
-  `corp_owner_id` int(11) NOT NULL COMMENT '团长ID',
-  `corp_create_time` int(11) NOT NULL COMMENT '创建时间'
+  `club_icon` varchar(255) DEFAULT NULL COMMENT '社团团标',
+  `club_name` varchar(255) NOT NULL COMMENT '社团名称',
+  `club_level` int(11) NOT NULL COMMENT '社团级别：1.兴趣社团2.院级组织3.校级组织',
+  `club_intro` varchar(255) NOT NULL COMMENT '社团简介',
+  `club_school` varchar(255) NOT NULL COMMENT '社团学校',
+  `club_owner_id` int(11) NOT NULL COMMENT '社团团长ID',
+  `club_status` int(1) NOT NULL DEFAULT '1' COMMENT '社团状态：1.启用2.禁用',
+  `club_create_time` int(11) NOT NULL COMMENT '创建时间'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- 转存表中的数据 `dlgx_corporation`
---
+INSERT INTO `dlgx_club` (`id`, `club_icon`, `club_name`, `club_level`, `club_intro`, `club_school`, `club_owner_id`, `club_status`, `club_create_time`) VALUES
+(2, NULL, '社团联合会', 3, '（暂无简介）', '浙江大学', 3, 1, 0);
 
-INSERT INTO `dlgx_corporation` (`id`, `corp_name`, `corp_img`, `corp_level`, `corp_intro`, `corp_status`, `corp_owner_id`, `corp_create_time`) VALUES
-(1, '大乐个学', 'hello', 1, '大乐个学大乐个学大乐个学大乐个学大乐个学', 1, 1, 0);
+CREATE TABLE `dlgx_club_apply` (
+  `id` int(11) NOT NULL,
+  `club_icon` varchar(255) DEFAULT NULL COMMENT '社团团标',
+  `club_name` varchar(255) NOT NULL COMMENT '社团名称',
+  `club_level` int(1) NOT NULL COMMENT '社团级别：1.兴趣社团2.院级组织3.校级组织',
+  `club_intro` varchar(255) NOT NULL DEFAULT '（暂无简介）' COMMENT '社团简介',
+  `club_school` varchar(255) NOT NULL COMMENT '社团学校',
+  `club_owner_id` int(11) NOT NULL COMMENT '社团团长ID',
+  `club_owner_idcard` varchar(255) NOT NULL COMMENT '社团团长身份证号',
+  `apply_time` int(11) NOT NULL COMMENT '申请时间',
+  `verify_status` int(1) NOT NULL DEFAULT '1' COMMENT '状态：1.审核中2.已通过3.已拒绝',
+  `verify_idea` varchar(255) DEFAULT NULL COMMENT '审核意见'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
+INSERT INTO `dlgx_club_apply` (`id`, `club_icon`, `club_name`, `club_level`, `club_intro`, `club_school`, `club_owner_id`, `club_owner_idcard`, `apply_time`, `verify_status`, `verify_idea`) VALUES
+(1, NULL, '社团联合会', 3, '（暂无简介）', '浙江大学', 3, '10086', 1474116645, 2, NULL);
 
---
--- 表的结构 `dlgx_member`
---
+CREATE TABLE `dlgx_club_join` (
+  `id` int(11) NOT NULL,
+  `club_id` int(11) NOT NULL COMMENT '社团ID',
+  `member_id` int(11) NOT NULL COMMENT '会员ID',
+  `apply_time` int(11) NOT NULL COMMENT '申请时间',
+  `verify_status` int(1) NOT NULL DEFAULT '1' COMMENT '审核状态：1.审核中2.已通过3.已拒绝'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `dlgx_club_join` (`id`, `club_id`, `member_id`, `apply_time`, `verify_status`) VALUES
+(6, 2, 4, 1474119796, 0);
 
 CREATE TABLE `dlgx_member` (
   `id` int(11) NOT NULL,
-  `member_name` varchar(255) DEFAULT NULL COMMENT '名称',
-  `member_sex` int(1) DEFAULT NULL COMMENT '性别',
+  `member_openid` varchar(255) NOT NULL COMMENT '微信openid',
+  `member_icon` varchar(255) NOT NULL COMMENT '会员头像',
+  `member_name` varchar(255) NOT NULL COMMENT '会员名称',
+  `member_intro` varchar(255) NOT NULL DEFAULT '（暂无简介）' COMMENT '会员简介',
+  `real_name` varchar(255) DEFAULT NULL COMMENT '真实姓名',
+  `member_sex` int(1) DEFAULT NULL COMMENT '性别：1.男2.女',
   `member_school` varchar(255) DEFAULT NULL COMMENT '学校',
   `member_department` varchar(255) DEFAULT NULL COMMENT '院系',
   `member_class` varchar(255) DEFAULT NULL COMMENT '专业班级',
   `member_tel` varchar(11) DEFAULT NULL COMMENT '手机',
+  `member_idcard` varchar(18) DEFAULT NULL COMMENT '身份证号',
   `last_login_time` int(11) NOT NULL COMMENT '最近登录时间',
   `last_login_ip` varchar(255) NOT NULL COMMENT '最近登录IP',
-  `member_create_time` int(11) NOT NULL COMMENT '注册时间',
-  `member_type` int(1) NOT NULL DEFAULT '1' COMMENT '类型：1.成员2.团长',
-  `member_idcard` varchar(18) DEFAULT NULL COMMENT '身份证号',
-  `member_openid` varchar(255) NOT NULL COMMENT '微信openid'
+  `login_times` int(11) NOT NULL COMMENT '登录次数',
+  `member_create_time` int(11) NOT NULL COMMENT '注册时间'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- 表的结构 `dlgx_node`
---
+INSERT INTO `dlgx_member` (`id`, `member_openid`, `member_icon`, `member_name`, `member_intro`, `real_name`, `member_sex`, `member_school`, `member_department`, `member_class`, `member_tel`, `member_idcard`, `last_login_time`, `last_login_ip`, `login_times`, `member_create_time`) VALUES
+(3, 'ovo_Wv9unNunV_aCCoXVyRtOFw2I', 'http://wx.qlogo.cn/mmopen/NXsNg5c1niaXCcjXCBBkUDDHeEyMaibT422ydJV81PqWP2pBdQTPLOEeaAUdfOOLicf8F6bjLeQV0oEKbTIBjVX8a2HomPIcbFc/0', 'Luyadr', '（暂无简介）', '卢阳安', 1, '浙江大学', '信息工程学院', '信管121班', '18868196393', NULL, 1474095468, '127.0.0.1', 1, 1474095468),
+(4, 'ovo_Wv9unNunV_aCCoXVyRtOFw2I', 'http://wx.qlogo.cn/mmopen/NXsNg5c1niaXCcjXCBBkUDDHeEyMaibT422ydJV81PqWP2pBdQTPLOEeaAUdfOOLicf8F6bjLeQV0oEKbTIBjVX8a2HomPIcbFc/0', '123', '（暂无简介）', '姚靖雯', 2, '浙江大学', '信息工程学院', '信管121班', '18868196613', NULL, 1474095468, '127.0.0.1', 1, 1474095468);
 
 CREATE TABLE `dlgx_node` (
   `id` int(11) NOT NULL,
@@ -127,14 +110,10 @@ CREATE TABLE `dlgx_node` (
   `module_name` varchar(255) NOT NULL COMMENT '模块名称',
   `controller_name` varchar(255) NOT NULL COMMENT '控制器名称',
   `action_name` varchar(255) NOT NULL COMMENT '方法名称',
-  `is_menu` int(1) NOT NULL DEFAULT '1' COMMENT '是否是菜单项：1.不是2.是',
+  `is_menu` int(1) NOT NULL COMMENT '是否是菜单项：1.不是2.是',
   `father_node_id` int(11) NOT NULL COMMENT '父节点ID',
   `style` varchar(255) DEFAULT NULL COMMENT '样式'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- 转存表中的数据 `dlgx_node`
---
 
 INSERT INTO `dlgx_node` (`id`, `node_name`, `module_name`, `controller_name`, `action_name`, `is_menu`, `father_node_id`, `style`) VALUES
 (1, '系统管理', '#', '#', '#', 2, 0, 'fa fa-desktop'),
@@ -171,54 +150,25 @@ INSERT INTO `dlgx_node` (`id`, `node_name`, `module_name`, `controller_name`, `a
 (34, '图片上传', 'admin', 'activity', 'upload', 1, 3, NULL),
 (35, '视频上传', 'admin', 'video', 'upload', 1, 3, NULL);
 
--- --------------------------------------------------------
-
---
--- 表的结构 `dlgx_notice`
---
-
 CREATE TABLE `dlgx_notice` (
   `id` int(11) NOT NULL,
-  `notice_title` varchar(255) NOT NULL COMMENT '标题',
-  `notice_from_id` int(11) NOT NULL DEFAULT '0' COMMENT '发布社团ID，默认0为官方',
-  `notice_release_time` int(11) NOT NULL DEFAULT '0' COMMENT '发布时间',
-  `notice_content` text NOT NULL COMMENT '内容',
-  `notice_status` int(1) NOT NULL DEFAULT '1' COMMENT '状态：1.发布2.不发布'
+  `notice_title` varchar(255) NOT NULL COMMENT '公告标题',
+  `notice_content` text NOT NULL COMMENT '公告内容',
+  `notice_from_id` int(11) NOT NULL DEFAULT '0' COMMENT '发布社团ID，0表示官方',
+  `notice_release_time` int(11) NOT NULL DEFAULT '0' COMMENT '发布时间，0表示不发布'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-) ;
 
---
--- 转存表中的数据 `dlgx_notice`
---
-
-INSERT INTO `dlgx_notice` (`id`, `notice_title`, `notice_from_id`, `notice_release_time`, `notice_content`, `notice_status`) VALUES
-(2, '大乐个学上线啦！', 0, 1472560409, '大乐个学上线啦！大乐个学上线啦！大乐个学上线啦！大乐个学上线啦！大乐个学上线啦！大乐个学上线啦！大乐个学上线啦！大乐个学上线啦！大乐个学上线啦！大乐个学上线啦！', 1);
-
--- --------------------------------------------------------
-
---
--- 表的结构 `dlgx_role`
---
+INSERT INTO `dlgx_notice` (`id`, `notice_title`, `notice_content`, `notice_from_id`, `notice_release_time`) VALUES
+(2, '大乐个学上线啦！', '大乐个学上线啦！大乐个学上线啦！大乐个学上线啦！大乐个学上线啦！大乐个学上线啦！大乐个学上线啦！大乐个学上线啦！大乐个学上线啦！大乐个学上线啦！大乐个学上线啦！', 0, 1472560409);
 
 CREATE TABLE `dlgx_role` (
   `id` int(11) NOT NULL,
   `role_name` varchar(255) NOT NULL COMMENT '角色名称',
-  `permission_node` varchar(255) DEFAULT NULL COMMENT AS `权限节点`
+  `permission_node` varchar(255) DEFAULT NULL COMMENT '权限节点'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- 转存表中的数据 `dlgx_role`
---
-
 INSERT INTO `dlgx_role` (`id`, `role_name`, `permission_node`) VALUES
-(1, '超级管理员', ''),
-(2, '管理员', '3');
-
--- --------------------------------------------------------
-
---
--- 表的结构 `dlgx_school`
---
+(1, '超级管理员', '');
 
 CREATE TABLE `dlgx_school` (
   `id` int(11) NOT NULL,
@@ -226,171 +176,98 @@ CREATE TABLE `dlgx_school` (
   `school_name` varchar(255) NOT NULL COMMENT '学校名称'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- 转存表中的数据 `dlgx_school`
---
-
 INSERT INTO `dlgx_school` (`id`, `area_id`, `school_name`) VALUES
 (1, 2, '浙江大学'),
-(2, 2, '浙江工业大学'),
-(3, 1, '安徽师范大学'),
-(4, 1, '皖南医学院');
-
--- --------------------------------------------------------
-
---
--- 表的结构 `dlgx_user`
---
+(3, 1, '安徽师范大学');
 
 CREATE TABLE `dlgx_user` (
   `id` int(11) NOT NULL,
   `username` varchar(255) NOT NULL COMMENT '用户名',
   `password` varchar(255) NOT NULL COMMENT '密码',
-  `login_times` int(11) NOT NULL DEFAULT '0'COMMENT '登录次数',
-  `last_login_time` int(11) NOT NULL DEFAULT '0'COMMENT '最近登录时间',
-  `last_login_ip` varchar(255) NOT NULL COMMENT '最近登陆IP',
   `real_name` varchar(255) NOT NULL COMMENT '真实姓名',
-  `status` int(1) NOT NULL DEFAULT '1'COMMENT '状态：1.启用2.禁用',
-  `role_id` int(11) NOT NULL COMMENT '角色ID'
+  `role_id` int(11) NOT NULL COMMENT '角色ID',
+  `last_login_time` int(11) NOT NULL COMMENT '最近登录时间',
+  `last_login_ip` varchar(255) NOT NULL COMMENT '最近登陆IP',
+  `login_times` int(11) NOT NULL COMMENT '登录次数',
+  `status` int(1) NOT NULL COMMENT '状态：1.启用2.禁用'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-) ;
 
---
--- 转存表中的数据 `dlgx_user`
---
-
-INSERT INTO `dlgx_user` (`id`, `username`, `password`, `login_times`, `last_login_time`, `last_login_ip`, `real_name`, `status`, `role_id`) VALUES
-(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 48, 1473752216, '0.0.0.0', '大乐个学', 1, 1),
-(2, 'Luyadr', 'e10adc3949ba59abbe56e057f20f883e', 0, 0, '', 'Luyadr', 1, 2);
-
--- --------------------------------------------------------
-
---
--- 表的结构 `dlgx_video`
---
+INSERT INTO `dlgx_user` (`id`, `username`, `password`, `real_name`, `role_id`, `last_login_time`, `last_login_ip`, `login_times`, `status`) VALUES
+(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', '大乐个学', 1, 1473752216, '0.0.0.0', 48, 1);
 
 CREATE TABLE `dlgx_video` (
   `id` int(11) NOT NULL,
-  `video_name` varchar(255) NOT NULL COMMENT '描述',
-  `video_url` varchar(255) NOT NULL COMMENT '链接',
-  `video_time` int(11) NOT NULL COMMENT '时长',
-  `video_size` varchar(255) NOT NULL COMMENT '大小',
-  `video_release_time` int(11) NOT NULL COMMENT '发布时间',
-  `video_status` int(1) NOT NULL DEFAULT '1' COMMENT '状态：1.发布2.不发布'
+  `video_name` varchar(255) NOT NULL COMMENT '视频名称',
+  `video_url` varchar(255) NOT NULL COMMENT '视频链接',
+  `video_release_time` int(11) NOT NULL DEFAULT '0' COMMENT '发布时间，0表示不发布'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Indexes for dumped tables
---
+INSERT INTO `dlgx_video` (`id`, `video_name`, `video_url`, `video_release_time`) VALUES
+(1, '大乐个学', 'http://odfgs4sbe.bkt.clouddn.com/20160913.mp4', 1474089989);
 
---
--- Indexes for table `dlgx_activity`
---
 ALTER TABLE `dlgx_activity`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `dlgx_area`
---
+ALTER TABLE `dlgx_act_join`
+  ADD PRIMARY KEY (`id`);
+
 ALTER TABLE `dlgx_area`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `dlgx_corporation`
---
-ALTER TABLE `dlgx_corporation`
+ALTER TABLE `dlgx_club`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `dlgx_member`
---
+ALTER TABLE `dlgx_club_apply`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `dlgx_club_join`
+  ADD PRIMARY KEY (`id`);
+
 ALTER TABLE `dlgx_member`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `dlgx_node`
---
 ALTER TABLE `dlgx_node`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `dlgx_role`
---
+ALTER TABLE `dlgx_notice`
+  ADD PRIMARY KEY (`id`);
+
 ALTER TABLE `dlgx_role`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `dlgx_school`
---
 ALTER TABLE `dlgx_school`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `dlgx_user`
---
 ALTER TABLE `dlgx_user`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `dlgx_video`
---
 ALTER TABLE `dlgx_video`
   ADD PRIMARY KEY (`id`);
 
---
--- 在导出的表使用AUTO_INCREMENT
---
 
---
--- 使用表AUTO_INCREMENT `dlgx_activity`
---
 ALTER TABLE `dlgx_activity`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- 使用表AUTO_INCREMENT `dlgx_area`
---
+ALTER TABLE `dlgx_act_join`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 ALTER TABLE `dlgx_area`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- 使用表AUTO_INCREMENT `dlgx_corporation`
---
-ALTER TABLE `dlgx_corporation`
+ALTER TABLE `dlgx_club`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `dlgx_club_apply`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
--- 使用表AUTO_INCREMENT `dlgx_member`
---
+ALTER TABLE `dlgx_club_join`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 ALTER TABLE `dlgx_member`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- 使用表AUTO_INCREMENT `dlgx_node`
---
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 ALTER TABLE `dlgx_node`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
---
--- 使用表AUTO_INCREMENT `dlgx_notice`
---
 ALTER TABLE `dlgx_notice`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- 使用表AUTO_INCREMENT `dlgx_role`
---
 ALTER TABLE `dlgx_role`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- 使用表AUTO_INCREMENT `dlgx_school`
---
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 ALTER TABLE `dlgx_school`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
---
--- 使用表AUTO_INCREMENT `dlgx_user`
---
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 ALTER TABLE `dlgx_user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- 使用表AUTO_INCREMENT `dlgx_video`
---
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 ALTER TABLE `dlgx_video`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

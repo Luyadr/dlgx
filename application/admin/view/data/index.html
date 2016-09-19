@@ -52,7 +52,7 @@
                     {if !empty($tables)}
                     {foreach name="tables" item="vo"}
                         <tr>
-                            <td>{$vo.Tables_in_jianwen}</td>
+                            <td>{$vo.Tables_in_dlgx}</td>
                             <td>{$vo.alls}</td>
                             <td>{$vo.ctime}</td>
                             <td>{$vo.operate}</td>
@@ -94,7 +94,7 @@
 <script src="__JS__/plugins/layer/layer.min.js"></script>
 <script type="text/javascript">
 
-    function importData(table, all){
+    function backup(table, all){
         index = layer.open({
             type: 1,
             area:'400px',
@@ -102,7 +102,7 @@
             skin: 'layui-layer-demo', //加上边框
             content: $('#wait')
         });
-        $.getJSON('./importData', {'table' : table}, function(res){
+        $.getJSON('./backup', {'table' : table}, function(res){
             layer.close(index);
             layer.alert('备份成功！', {icon: 1}, function(){
                 window.location.reload();
@@ -110,7 +110,7 @@
         })
     }
 
-    function backData(table){
+    function recover(table){
         index = layer.open({
             type: 1,
             area:'400px',
@@ -118,7 +118,7 @@
             skin: 'layui-layer-demo', //加上边框
             content: $('#wait')
         });
-        $.getJSON('./backData', {'table' : table}, function(res){
+        $.getJSON('./recover', {'table' : table}, function(res){
             layer.close(index);
             if(res.code == 1){
                 layer.alert('还原成功！', {icon: 1}, function(){

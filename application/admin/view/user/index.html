@@ -21,7 +21,7 @@
         </div>
         <div class="ibox-content">
             <div class="form-group clearfix col-sm-1">
-                <a href="./userAdd"><button class="btn btn-outline btn-primary" type="button">添加用户</button></a>
+                <a href="./add"><button class="btn btn-outline btn-primary" type="button">添加用户</button></a>
             </div>
             <!--搜索框开始-->
             <form id='commentForm' role="form" method="post" class="form-inline">
@@ -44,11 +44,11 @@
                     <table id="cusTable" data-height="700">
                         <thead>
                         <th data-field="username">管理员名称</th>
-                        <th data-field="rolename">管理员角色</th>
-                        <th data-field="loginnum">登录次数</th>
+                        <th data-field="role_id">管理员角色</th>
+                        <th data-field="login_times">登录次数</th>
                         <th data-field="last_login_ip">上次登录ip</th>
                         <th data-field="last_login_time">上次登录时间</th>
-                        <th data-field="real_name">真是姓名</th>
+                        <th data-field="real_name">真实姓名</th>
                         <th data-field="status">状态</th>
                         <th data-field="operate">操作</th>
                         </thead>
@@ -113,10 +113,10 @@
         $("#search").bind("click", initTable);
     });
 
-    function userDel(id){
+    function del(id){
         layer.confirm('确认删除此管理员?', {icon: 3, title:'提示'}, function(index){
             //do something
-            $.getJSON('./userDel', {'id' : id}, function(res){
+            $.getJSON('./del', {'id' : id}, function(res){
                 if(res.code == 1){
                     layer.alert('删除成功');
                     initTable();

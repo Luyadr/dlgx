@@ -21,7 +21,7 @@
         </div>
         <div class="ibox-content">
             <div class="form-group clearfix col-sm-1">
-                <a href="./create"><button class="btn btn-outline btn-primary" type="button">添加节点</button></a>
+                <a href="./add"><button class="btn btn-outline btn-primary" type="button">添加节点</button></a>
             </div>
             <!--搜索框开始-->
             <form id='commentForm' node="form" method="post" class="form-inline">
@@ -117,7 +117,7 @@
     function del(id){
         layer.confirm('确认删除此节点?', {icon: 3, title:'提示'}, function(index){
             //do something
-            $.getJSON('./delete', {'id' : id}, function(res){
+            $.getJSON('./del', {'id' : id}, function(res){
                 if(res.code == 1){
                     layer.alert('删除成功', function(){
                         initTable();

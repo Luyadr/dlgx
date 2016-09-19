@@ -1,0 +1,28 @@
+{include file="common/header" title="我的" keywords="大乐个学" description="大乐个学" /}
+
+	<style>body {background-color: #ebebeb}</style>
+
+	<div id="account-top">
+		<img src="{$memberIcon}" alt="" class="portrait">
+		<p>{$memberName}</p>
+	</div>
+
+	<div id="account-list" class="pre-navbt">
+		{if !empty($clubCounts)}
+		<a href="{:url('check/index')}"><p><span>成员审核</span><img src="__IMAGES__/arrow_right.png" alt=""></p></a>
+		{/if}
+		<ul>
+			<a href="{:url('member/edit')}"><li><span>我的信息</span><img src="__IMAGES__/arrow_right.png" alt=""></li></a>
+			<a href="{:url('club/clubJoined')}"><li><span>我的社团</span><img src="__IMAGES__/arrow_right.png" alt=""></li></a>
+			<a href="{:url('activity/actList')}"><li><span>我的活动</span><img src="__IMAGES__/arrow_right.png" alt=""></li></a>
+		</ul>
+	</div>
+
+	<div class="nav-bottom">
+		<a href="{:url('index/show')}">
+			<div class="navbt-item"><img src="__IMAGES__/home_white.png" alt=""><span>首页</span></div>
+		</a>
+		<div class="navbt-item active"><img src="__IMAGES__/person.png" alt=""><span>我的</span></div>
+	</div>
+
+{include file="common/footer" /}

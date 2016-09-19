@@ -21,6 +21,14 @@ class NodeModel extends BaseModel
 
         return $menu;
     }
-
+	
+   public function getAllInfo()
+   {
+	     return $this->select();
+   }
+   public function info($id)
+   {
+	     return $this->where('id', $id)->find();
+   }
 
 }

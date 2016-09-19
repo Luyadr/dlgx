@@ -1,7 +1,7 @@
 <?php
 namespace app\index\model;
 
-class SchoolModel extends BaseModel
+class ActivityModel extends BaseModel
 {
-    protected $table = "dlgx_school";
+    protected $table = "dlgx_activity";
 }

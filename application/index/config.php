@@ -12,10 +12,11 @@
 return [
     //模板参数替换
     'view_replace_str' => array(
-        '__PUBLIC__' => '/dlgx/public/',
-        '__STATIC__' => '/dlgx/public/static/',
-        '__CSS__' => '/dlgx/public/css/',
-        '__IMAGES__' => '/dlgx/public/images/',
-        '__JS__' => '/dlgx/public/js/',
-    ),
+        '__PUBLIC__' => '/dlgx/public',
+        '__CSS__' => '/dlgx/public/css',
+        '__IMAGES__' => '/dlgx/public/images',
+        '__JS__' => '/dlgx/public/js',
+        '__SCRIPT__' => '/dlgx/public/script',
+        '__STATIC__' => '/dlgx/public/static',
+    )
 ];

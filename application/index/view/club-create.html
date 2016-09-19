@@ -1,58 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<meta name="renderer" content="webkit|ie-comp|ie-stand">
-	<meta name="keywords" content="[keywords]" />
-	<meta name="description" content="[description]"/>
-	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-	<meta http-equiv="Cache-Control" content="no-transform" />
-	<meta http-equiv="Cache-Control" content="no-siteapp" />
+{include file="common/header" title="创建社团" keywords="大乐个学" description="大乐个学"/}
 
-	<!--[if lte IE 9]>
-	<link rel="stylesheet" type="text/css" href="__CSS__/IE/ie.css" />
-	<![endif]-->
-
-	<!--[if IE 9]>
-	<script type="text/javascript" src="__STATIC__/PIE-2.0beta1/PIE_IE9.js"></script>
-	<link rel="stylesheet" type="text/css" href="__CSS__/IE/ie9.css" />
-	<![endif]-->
-
-	<!--[if lt IE 9]>
-	<script type="text/javascript" src="__JS__/html5.js"></script>
-	<script type="text/javascript" src="__STATIC__/PIE-2.0beta1/PIE_IE678.js"></script>
-	<link rel="stylesheet" type="text/css" href="__CSS__/IE/ie678.css" />
-	<![endif]-->
-
-	<title>[title]</title>
-	<link rel="stylesheet" href="__CSS__/core/core.css">
-	<link rel="stylesheet" href="__CSS__/style.css">
-	<script type="text/javascript" src="__JS__/zepto.min.js"></script>
-</head>
-<body>
 	<style>body {background-color: #eee}</style>
 	
 	<div id="ccreate-wrap">
-		<form action="">
-			<p class="ccreate-title">
-				填写社团资料
-			</p>
+		<form id="clubForm" onsubmit="return toValid();">
+			<p class="ccreate-title">填写社团资料</p>
 			<div class="ccreate-detail">
 				<ul>
-					<li><span> 社团名称</span><input type="text" name="name" placeholder="请输入社团名称"></li>
-					<li class="show-dpicker pr"><span>社团级别</span><input type="text" name="rank" value="校级组织" readonly><img src="__PUBLIC__/images/arrow_right.png" alt=""></li>
+					<li><span>社团名称</span><input type="text" name="club_name" placeholder="请输入社团名称"></li>
+					<li class="show-dpicker pr"><span>社团级别</span><input type="text" name="club_level" value="校级组织" readonly><img src="__IMAGES__/arrow_right.png" alt=""></li>
 				</ul>
 			</div>
-			<p class="ccreate-title">
-				填写申请人信息
-			</p>
+			<p class="ccreate-title">填写申请人信息</p>
 			<div class="ccreate-detail">
 				<ul>
-					<li><span>申请人姓名</span><input type="text" name="user" placeholder="请输入您的姓名"></li>
-					<li><span>身份证号码</span><input type="text" name="idnumber" placeholder="请输入您的身份证号码"></li>
-					<li class="scode-send-wrap"><span>手机号码</span><input type="text" name="phone" placeholder="手机号码"><input type="button" value="发送验证码"></li>
-					<li><span>验证码</span><input type="text" name="scode" placeholder="请输入您收到的验证码"></li>
+					<li><span>身份证号码</span><input type="text" name="club_owner_idcard" placeholder="请输入您的身份证号码"></li>
 				</ul>
 			</div>
 			<button class="submit">立即创建</button>
@@ -65,15 +27,62 @@
 				<li class="dpicker-item empty sub-active"></li>
 				<li class="dpicker-item active">校级组织</li>
 				<li class="dpicker-item sub-active">院级组织</li>
-				<li class="dpicker-item">兴趣组织</li>
-				<li class="dpicker-item">校级组织</li>
-				<li class="dpicker-item">院级组织</li>
-				<li class="dpicker-item">兴趣组织</li>
+				<li class="dpicker-item">兴趣社团</li>
 				<li class="dpicker-item empty"></li>
 			</ul>
 		</div>
 	</div>
-	<script src="__PUBLIC__/script/min/validate.min.js"></script>
-	<script src="__PUBLIC__/script/min/clubCreate.min.js"></script>
-</body>
-</html>
+	<script src="__SCRIPT__/myPop.js"></script>
+	<script src="__SCRIPT__/validate.js"></script>
+	<script>
+		$(function() {
+			var rate = 0;
+			$(".dpicker-body").scroll(function() {
+				rate = setPickerStyle(rate)
+			});
+			$(".dpicker-finish").click(function() {
+				var text = $(".dpicker-item.active").text();
+				$(".date-picker").css({'bottom':'-17.5rem'});
+				$(".show-dpicker input").val(text);
+			});
+			$(".show-dpicker").click(function() {
+				$(".date-picker").css({'bottom':0});
+			});
+			setPickerStyle(0);
+		});
+		function setPickerStyle(rate) {
+			var i, len, scrollTop = $(".dpicker-body").scrollTop(), newRate = parseInt(scrollTop / 38);
+			if(newRate === rate) {
+				return rate;
+			}
+			var itemList = $(".dpicker-item");
+			if($(itemList[newRate + 1]).hasClass('empty')) {
+				return newRate;
+			}
+			itemList = $(".dpicker-item").removeClass('active').removeClass('sub-active');
+			$(itemList[newRate + 1]).addClass('active').prev().addClass('sub-active').next().next().addClass('sub-active');
+			return newRate;
+		}
+		//表单提交
+		function toValid(){
+			$.ajax({
+				type:"POST",
+				url:"{:url('club/create')}",
+				data:{'data' : $('#clubForm').serialize()},
+				async:false,
+				success: function(data) {
+					myalert(data.msg);
+					$(".alert-operate").click(function() {
+						if(data.code == -1) {
+							location.href = "{:url('club/clubCreated')}";
+						} else if(data.code == -2) {
+							location.href = "{:url('index/index')}";
+						}
+					})
+				}
+			});
+			return false;
+		}
+	</script>
+
+{include file="common/footer" /}
