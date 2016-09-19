@@ -642,9 +642,9 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
         $this->autoCompleteData($this->auto);
 
         // 自动写入更新时间
-        if ($this->autoWriteTimestamp && $this->updateTime) {
-            $this->setAttr($this->updateTime, null);
-        }
+//        if ($this->autoWriteTimestamp && $this->updateTime) {
+//            $this->setAttr($this->updateTime, null);
+//        }
 
         // 事件回调
         if (false === $this->trigger('before_write', $this)) {
@@ -698,9 +698,9 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
             $this->autoCompleteData($this->insert);
 
             // 自动写入创建时间
-            if ($this->autoWriteTimestamp && $this->createTime) {
-                $this->setAttr($this->createTime, null);
-            }
+//            if ($this->autoWriteTimestamp && $this->createTime) {
+//                $this->setAttr($this->createTime, null);
+//            }
 
             if (false === $this->trigger('before_insert', $this)) {
                 return false;

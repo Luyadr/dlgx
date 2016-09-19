@@ -2,15 +2,14 @@
 namespace app\admin\controller;
 
 use app\admin\model\ClubModel;
-use app\admin\model\RoleModel;
-use app\admin\model\Club_applyModel;
+use app\index\model\ClubApplyModel;
+use app\index\model\MemberModel;
 
 class Club extends Base
 {
-    //用户列表
     public function index()
     {
-        if(request()->isAjax()){
+        if (request()->isAjax()) {
 
             $param = input('param.');
 
@@ -22,26 +21,26 @@ class Club extends Base
                 $where['club_name'] = ['like', '%' . $param['searchText'] . '%'];
             }
             $club = new ClubModel();
-            $selectResult = $club->getClubsByWhere($where, $offset, $limit);
+            $selectResult = $club->getListByWhere($where, $offset, $limit);
 
-            $status = config('verify_status');
-            $club_level= config('club_level');
-            foreach($selectResult as $key=>$vo){
-
-                $selectResult[$key]['apply_time'] = date('Y-m-d H:i:s', $vo['apply_time']);
-                $selectResult[$key]['verify_status'] = $status[$vo['verify_status']];
+            $status = config('club_status');
+            $club_level = config('club_level');
+            foreach ($selectResult as $key => $vo) {
+                $member = new MemberModel();
+                $info = $member->getInfoById($vo['club_owner_id']);//查询社团团长名字
+                $selectResult[$key]['club_owner_id'] = $info['member_name'];
+                $selectResult[$key]['club_status'] = $status[$vo['club_status']];
                 $selectResult[$key]['club_level'] = $club_level[$vo['club_level']];
 
                 $operate = [
-                    '审核' => url('club/apply', ['id' => $vo['id']]),
-                    '删除' => "javascript:del('".$vo['id']."')"
+                    '编辑' => url('club/edit', ['id' => $vo['id']])
                 ];
 
                 $selectResult[$key]['operate'] = showOperate($operate);
 
             }
 
-            $return['total'] = $club->getAllClubs($where);  //总数据
+            $return['total'] = $club->getCounts($where);  //总数据
             $return['rows'] = $selectResult;
 
             return json($return);
@@ -50,33 +49,95 @@ class Club extends Base
         return $this->fetch();
     }
 
-
-    //审核社团
-    public function apply()
+    //编辑审核社团
+    public function editApply()
     {
-        $club = new ClubModel();
+        $club = new ClubApplyModel();
 
-        if(request()->isPost()){
+        if (request()->isPost()) {
 
             $param = input('post.');
             $param = parseParams($param['data']);
-
-            $flag = $club->editClub($param,'clubValidate');
-            if($flag&&$param['verify_status'] =='2'){
-                $club_apply = new Club_applyModel(); //给club表增加数据
-                unset($param['id']);unset($param['club_owner_idcard']);unset($param['apply_time']);unset($param['verify_status']);unset($param['verify_idea']);
-                $param['club_create_time'] = time();
+            $flag = $club->edit($param, 'clubValidate');
+            if ($param['verify_status'] == 2) {
+                $club = new ClubModel();
+                unset($param['verify_status']);
+                unset($param['id']);
+                unset($param['verify_idea']);
                 $param['club_status'] = 1;
-                $flag = $club_apply->insertClub_apply($param,'clubValidate');
+                $param['club_create_time'] = time();
+                $club->insert($param, 'clubValidate');
             }
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
 
         $id = input('param.id');
         $this->assign([
-            'club' => $club->getOneClub($id),
-            'verify_status' => config('club_status')
+            'club' => $club->getInfoById($id),
+            'verify_status' => config('verify_status')
         ]);
+        return $this->fetch();
+    }
+    //编辑社团状态
+    public function edit()
+    {
+        $club = new ClubModel();
+
+        if (request()->isPost()) {
+
+            $param = input('post.');
+            $param = parseParams($param['data']);
+            $flag = $club->edit($param, 'clubValidate');
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+
+        $id = input('param.id');
+        $this->assign([
+            'club' => $club->getInfoById($id),
+            'club_status' => config('club_status')
+        ]);
+        return $this->fetch();
+    }
+
+    //审核社团列表
+    public function apply()
+    {
+        if (request()->isAjax()) {
+
+            $param = input('param.');
+
+            $limit = $param['pageSize'];
+            $offset = ($param['pageNumber'] - 1) * $limit;
+
+            $where = [];
+            if (isset($param['searchText']) && !empty($param['searchText'])) {
+                $where['club_name'] = ['like', '%' . $param['searchText'] . '%'];
+            }
+            $club = new ClubApplyModel();
+            $selectResult = $club->getListByWhere($where, $offset, $limit);
+            $status = config('apply_status');
+            $club_level = config('club_level');
+            foreach ($selectResult as $key => $vo) {
+                $member = new MemberModel();
+                $info = $member->getInfoById($vo['club_owner_id']);//查询社团团长名字
+                $selectResult[$key]['club_owner_id'] = $info['member_name'];
+                $selectResult[$key]['club_level'] = $club_level[$vo['club_level']];
+                if ($selectResult[$key]['verify_status'] == 1) {
+                    $operate = [
+                        '审核' => url('club/edit_apply', ['id' => $vo['id']]),
+                    ];
+                    $selectResult[$key]['operate'] = showOperate($operate);
+                }
+                $selectResult[$key]['verify_status'] = $status[$vo['verify_status']];
+
+            }
+
+            $return['total'] = $club->getCounts($where);  //总数据
+            $return['rows'] = $selectResult;
+
+            return json($return);
+        }
+
         return $this->fetch();
     }
 
@@ -86,7 +147,7 @@ class Club extends Base
         $id = input('param.id');
 
         $club = new ClubModel();
-        $flag = $club->delClub($id);
+        $flag = $club->del($id);
         return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
     }
 }

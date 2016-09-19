@@ -12,10 +12,10 @@ class Index extends Controller
 {
     public function index()
     {
-//        session('memberId',4);
-//        session('memberIcon','http://wx.qlogo.cn/mmopen/NXsNg5c1niaXCcjXCBBkUDDHeEyMaibT422ydJV81PqWP2pBdQTPLOEeaAUdfOOLicf8F6bjLeQV0oEKbTIBjVX8a2HomPIcbFc/0');
-//        session('memberName','123');
-//        $this->redirect('index/show');
+        session('memberId',4);
+        session('memberIcon','http://wx.qlogo.cn/mmopen/NXsNg5c1niaXCcjXCBBkUDDHeEyMaibT422ydJV81PqWP2pBdQTPLOEeaAUdfOOLicf8F6bjLeQV0oEKbTIBjVX8a2HomPIcbFc/0');
+        session('memberName','123');
+        $this->redirect('index/show');
 
         //第一步：请求code
         $appId = 'wxd53d2b1ef188dca7';//大乐个学

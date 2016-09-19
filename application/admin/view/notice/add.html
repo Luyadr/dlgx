@@ -53,24 +53,16 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">发布社团ID：</label>
-
-                            <div class="input-group col-sm-1">
-                                <input id="notice_from_id" type="text" class="form-control" name="notice_from_id"
-                                       required="" aria-required="true">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">发布时间：</label>
-
+                            <label class="col-sm-3 control-label">是否发布：</label>
                             <div class="input-group col-sm-4">
-                                <input id="notice_release_time" type="text" class="form-control" name="notice_release_time" data-dp="1"
-                                       required="" aria-required="true">
+                                <div class="radio i-checks col-sm-10">
+                                    <label><input type="radio" value="1"  name="notice_status" checked> <i></i>发布 </label>
+                                    <label><input type="radio" value="2"  name="notice_status"> <i></i>不发布</label>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-3">
-                                <!--<input type="button" value="提交" class="btn btn-primary" id="postform"/>-->
                                 <button class="btn btn-primary" type="submit">提交</button>
                             </div>
                         </div>
@@ -90,7 +82,6 @@
 <script src="__JS__/plugins/sweetalert/sweetalert.min.js"></script>
 <script src="__JS__/plugins/layer/laydate/laydate.js"></script>
 <script src="__JS__/plugins/suggest/bootstrap-suggest.min.js"></script>
-<script src="__JS__/plugins/datapicker/bootstrap-datepicker.js"></script>
 <script src="__JS__/plugins/layer/layer.min.js"></script>
 <script type="text/javascript">
 
@@ -128,8 +119,6 @@
     //表单验证
     $(document).ready(function () {
         $(".i-checks").iCheck({checkboxClass: "icheckbox_square-green", radioClass: "iradio_square-green",});
-        //绑定时间控件
-        $('[data-dp]').datepicker({dateFormat: 'yy-mm-dd'});
     });
     $.validator.setDefaults({
         highlight: function (e) {
@@ -146,6 +135,21 @@
         validClass: "help-block m-b-none"
     });
 
+</script>
+<script>
+    var notice_release_time = {
+        elem: '#notice_release_time',
+        format: 'YYYY/MM/DD hh:mm:ss',
+        min: laydate.now(), //设定最小日期为当前日期
+        max: '2099-06-16 23:59:59', //最大日期
+        istime: true,
+        istoday: false,
+        choose: function (datas) {
+            end.min = datas; //开始日选好后，重置结束日的最小日期
+            end.start = datas //将结束日的初始值设定为开始日
+        }
+    };
+    laydate(notice_release_time);
 </script>
 </body>
 </html>

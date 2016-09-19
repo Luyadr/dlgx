@@ -116,7 +116,7 @@
         // normal tap
         else if ('last' in touch)
           // don't fire tap when delta position changed by more than 30 pixels,
-          // for instance when moving to a point and backup to origin
+          // for instance when moving to a point and back to origin
           if (deltaX < 30 && deltaY < 30) {
             // delay by one tick so we can cancel the 'tap' event if 'scroll' fires
             // ('tap' fires before 'scroll')

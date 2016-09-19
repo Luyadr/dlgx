@@ -3,15 +3,12 @@ namespace app\admin\controller;
 
 class Data extends Base
 {
-    //备份首页列表
     public function index()
     {
         $tables = db()->query('show tables');
-		
         foreach($tables as $key=>$vo){
             $sql = "select count(0) as alls from ".$vo['Tables_in_dlgx'];
             $tables[$key]['alls'] = db()->query($sql)['0']['alls'];
-
             $operate = [
                 '备份' => "javascript:backup('".$vo['Tables_in_dlgx']."', ".$tables[$key]['alls'].")",
                 '还原' => "javascript:recover('".$vo['Tables_in_dlgx']."')"
@@ -22,27 +19,22 @@ class Data extends Base
             }else{
                 $tables[$key]['ctime'] = '无';
             }
-
         }
         $this->assign([
            'tables' => $tables
         ]);
-
         return $this->fetch();
     }
-
     //备份数据
     public function backup()
     {
         set_time_limit(0);
         $table = input('param.table');
-
         $sqlStr = "SET FOREIGN_KEY_CHECKS=0;\r\n";
         $sqlStr .= "DROP TABLE IF EXISTS `$table`;\r\n";
         $create = db()->query('show create table ' . $table);
         $sqlStr .= $create['0']['Create Table'] . ";\r\n";
         $sqlStr .= "\r\n";
-
         $result = db()->query('select * from ' . $table);
         foreach($result as $key=>$vo){
             $keys = array_keys($vo);
@@ -55,30 +47,24 @@ class Data extends Base
             $vals = "'" . $vals . "'";
             $sqlStr .= "insert into `$table`($keys) values($vals);\r\n";
         }
-
         $filename = config('back_path') . $table . ".sql";
         $fp = fopen($filename, 'w');
         fputs($fp, $sqlStr);
         fclose($fp);
-
         return json(['code' => 1, 'data' => '', 'msg' => 'success']);
     }
-
     //还原数据
     public function recover()
     {
         set_time_limit(0);
         $table = input('param.table');
-
         if(!file_exists(config('back_path') . $table . ".sql")){
             return json(['code' => -1, 'data' => '', 'msg' => '备份数据不存在!']);
         }
-
         $sqls = analysisSql(config('back_path') . $table . ".sql");
         foreach($sqls as $key=>$sql){
             db()->query($sql);
         }
         return json(['code' => 1, 'data' => '', 'msg' => 'success']);
     }
-
 }
