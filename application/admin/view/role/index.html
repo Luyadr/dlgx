@@ -159,7 +159,6 @@
             layer.close(index2);
             if(res.code == 1){
                 zNodes = JSON.parse(res.data);  //将字符串转换成obj
-				alert(zNodes);
                 //页面层
                 index = layer.open({
                     type: 1,
@@ -208,7 +207,7 @@
         });
         var id = $("#nodeid").val();
         //写入库
-        $.post('./giveAccess', {'type' : 'give', 'id' : id, 'rule' : NodeString}, function(res){
+        $.post('./givepermission', {'type' : 'give', 'id' : id, 'permission_node' : NodeString}, function(res){
             layer.close(index);
             if(res.code == 1){
                 layer.alert(res.msg, function(){

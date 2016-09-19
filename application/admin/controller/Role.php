@@ -12,6 +12,7 @@ namespace app\admin\controller;
 
 use app\admin\model\NodeModel;
 use app\admin\model\RoleModel;
+use app\admin\model\UserType;
 
 class Role extends Base
 {
@@ -113,7 +114,7 @@ class Role extends Base
         //获取现在的权限
         if('get' == $param['type']){
 
-            $nodeStr = $node->info($param['id']);
+            $nodeStr = $node->getNodeInfo($param['id']);
             return json(['code' => 1, 'data' => $nodeStr, 'msg' => 'success']);
         }
         //分配新权限
@@ -121,9 +122,9 @@ class Role extends Base
 
             $doparam = [
                 'id' => $param['id'],
-                'rule' => $param['rule']
+                'permission_node' => $param['permission_node']
             ];
-            $user = new RoleModel();
+            $user = new UserType();
             $flag = $user->editAccess($doparam);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
