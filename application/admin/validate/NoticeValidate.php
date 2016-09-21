@@ -6,6 +6,6 @@ use think\Validate;
 class NoticeValidate extends Validate
 {
     protected $rule = [
-        ['notice_title', 'unique:notice', '该标题已存在']
+        ['notice_title', 'unique:notice', '该公告已存在']
     ];
 }

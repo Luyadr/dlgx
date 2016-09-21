@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>节点列表</title>
-    <link rel="shortcut icon" href="favicon.ico">
     <link href="__CSS__/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="__CSS__/font-awesome.min.css?v=4.4.0" rel="stylesheet">
     <link href="__CSS__/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
@@ -14,7 +13,6 @@
 </head>
 <body class="gray-bg">
 <div class="wrapper wrapper-content animated fadeInRight">
-    <!-- Panel Other -->
     <div class="ibox float-e-margins">
         <div class="ibox-title">
             <h5>节点列表</h5>
@@ -24,7 +22,7 @@
                 <a href="./add"><button class="btn btn-outline btn-primary" type="button">添加节点</button></a>
             </div>
             <!--搜索框开始-->
-            <form id='commentForm' node="form" method="post" class="form-inline">
+            <form id="commentForm" node="form" method="post" class="form-inline">
                 <div class="content clearfix m-b">
                     <div class="form-group">
                         <label>节点名称：</label>
@@ -38,7 +36,6 @@
             </form>
             <!--搜索框结束-->
             <div class="hr-line-dashed"></div>
-
             <div class="example-wrap">
                 <div class="example">
                     <table id="cusTable" data-height="500">
@@ -49,11 +46,9 @@
                     </table>
                 </div>
             </div>
-            <!-- End Example Pagination -->
         </div>
     </div>
 </div>
-<!-- End Panel Other -->
 <script type="text/javascript">
     zNodes = '';
 </script>
@@ -104,16 +99,13 @@
             }
         });
     }
-
     $(document).ready(function () {
         //调用函数，初始化表格
         initTable();
-
         //当点击查询按钮的时候执行
         $("#search").bind("click", initTable);
 
     });
-
     function del(id){
         layer.confirm('确认删除此节点?', {icon: 3, title:'提示'}, function(index){
             //do something
@@ -126,7 +118,6 @@
                     layer.alert('删除失败');
                 }
             });
-
             layer.close(index);
         })
     }

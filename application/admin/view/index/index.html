@@ -3,13 +3,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>52gg后台默认首页</title>
+    <title>大乐个学-后台首页</title>
     <link rel="shortcut icon" href="favicon.ico">
     <link href="__CSS__/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="__CSS__/font-awesome.min.css?v=4.4.0" rel="stylesheet">
-    <!-- Morris -->
     <link href="__CSS__/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
-    <!-- Gritter -->
     <link href="__JS__/plugins/gritter/jquery.gritter.css" rel="stylesheet">
     <link href="__CSS__/animate.min.css" rel="stylesheet">
     <link href="__CSS__/style.min.css?v=4.1.0" rel="stylesheet">
@@ -17,10 +15,8 @@
         .ibox-title span{cursor: pointer}
     </style>
 </head>
-
 <body class="gray-bg">
 <div class="wrapper wrapper-content">
-
     <!-- 上方tab -->
     <div class="row">
         <div class="col-sm-3">
@@ -69,8 +65,7 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <a href="#question">
-                        <i class="fa fa-question" style="color:red;margin-left:10px" data-container="body" data-toggle="popover" data-placement="bottom"
-                           data-content="日活跃用户 = 当日登录游戏的用户 - 当日新增用户数(去重)@@@@@@@@月活跃用户 = 最近30天登录游戏的用户 - 最近30天新增用户(去重)">&nbsp;Tips</i>
+                        <i class="fa fa-question" style="color:red;margin-left:10px" data-container="body" data-toggle="popover" data-placement="bottom" data-content="日活跃用户 = 当日登录游戏的用户 - 当日新增用户数(去重)@@@@@@@@月活跃用户 = 最近30天登录游戏的用户 - 最近30天新增用户(去重)">&nbsp;Tips</i>
                     </a>
                     <span class="label pull-right">日</span>
                     <span class="label pull-right">周</span>
@@ -84,7 +79,6 @@
             </div>
         </div>
     </div>
-
     <!-- 中间折线 -->
     <div class="row">
         <div class="col-sm-12">
@@ -150,7 +144,6 @@
             </div>
         </div>
     </div>
-
     <!-- 下方地图 -->
     <div class="row">
         <div class="col-sm-12">
@@ -162,7 +155,6 @@
                                 <div class="flot-chart-content" id="map1" style="height: 450px"></div>
                             </div>
                         </div>
-
                         <div class="col-sm-6">
                             <div class="flot-chart">
                                 <div class="flot-chart-content" id="map2" style="height: 450px"></div>
@@ -173,10 +165,7 @@
             </div>
         </div>
     </div>
-
 </div>
-
-
 <script src="__JS__/jquery.min.js?v=2.1.4"></script>
 <script src="__JS__/bootstrap.min.js?v=3.3.6"></script>
 <script src="__JS__/plugins/peity/jquery.peity.min.js"></script>
@@ -187,18 +176,15 @@
 <script src="__JS__/plugins/echarts/echarts-all.js"></script>
 <script type="text/javascript">
     $(function(){
-
         // 基于准备好的dom，初始化echarts实例
         var a = echarts.init(document.getElementById('flot-dashboard-chart'));
         b = {
-
             tooltip: {
                 trigger: 'axis'
             },
             legend: {
                 data:['登录','注册','付费','订单']
             },
-
             grid: {
                 left: '1%',
                 top: '20%',
@@ -243,14 +229,12 @@
                     type:'line',
                     stack: '总量',
                     data:[120, 132, 101, 134, 90, 230, 210, 210, 123, 165]
-                },
-
+                }
             ]
         };
         // 使用刚指定的配置项和数据显示图表。
         a.setOption(b);
         $(window).resize(a.resize);
-
         //map1用户充值分布
         var s = echarts.init(document.getElementById("map1"), 'infographic'),
         c = {
@@ -312,13 +296,11 @@
                         label: {
                             show: !0
                         }
-
                     },
                     emphasis: {
                         label: {
                             show: !0
                         }
-
                     }
                 },
                 data: [{
@@ -460,7 +442,7 @@
             }
             ]
         };
-        s.setOption(c),
+        s.setOption(c);
         $(window).resize(s.resize);
 
         //map2充值金额分布
@@ -670,12 +652,9 @@
                 }
             ]
         };
-        d.setOption(e),
+        d.setOption(e);
         $(window).resize(d.resize);
     })
-
 </script>
-
 </body>
-
 </html>

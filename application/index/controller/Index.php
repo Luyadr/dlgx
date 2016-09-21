@@ -12,6 +12,11 @@ class Index extends Controller
 {
     public function index()
     {
+        session('memberId', 8);
+        session('memberName', 'Luyadr');
+        session('memberIcon', 'http://wx.qlogo.cn/mmopen/M9FNTEk9xmSeiaa0rELiaAnV701jxRzphj5MtyuaOfz0GqfWTs26mv3ssQ5oPHibcKskficUUTsw9SJLqunnrd9hL6IMNzMrXXhM/0');
+        $this->redirect('index/show');
+
         //第一步：请求code
         $appId = 'wxd53d2b1ef188dca7';//大乐个学
         $redirectUri = 'http://lya.tunnel.qydev.com/dlgx/public/index.php/index/index/callback';

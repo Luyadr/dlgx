@@ -4,13 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>编辑管理员</title>
-    <link rel="shortcut icon" href="favicon.ico">
     <link href="__CSS__/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="__CSS__/font-awesome.min.css?v=4.4.0" rel="stylesheet">
     <link href="__CSS__/animate.min.css" rel="stylesheet">
     <link href="__CSS__/plugins/iCheck/custom.css" rel="stylesheet">
     <link href="__CSS__/style.min.css?v=4.1.0" rel="stylesheet">
-    <!-- Sweet Alert -->
     <link href="__CSS__/plugins/sweetalert/sweetalert.css" rel="stylesheet">
 </head>
 <body class="gray-bg">
@@ -20,17 +18,6 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>编辑管理员</h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="form_basic.html#">
-                            <i class="fa fa-wrench"></i>
-                        </a>
-                        <a class="close-link">
-                            <i class="fa fa-times"></i>
-                        </a>
-                    </div>
                 </div>
                 <div class="ibox-content">
                     <form class="form-horizontal m-t" id="commentForm" method="post" onsubmit="return toVaild()">
@@ -46,8 +33,8 @@
                             <div class="input-group col-sm-4">
                                 <select class="form-control" name="role_id" required="" aria-required="true">
                                     <option value="0">请选择</option>
-                                    {if !empty($role)}
-                                    {foreach name="role" item="vo"}
+                                    {if !empty($roleList)}
+                                    {foreach name="roleList" item="vo"}
                                     <option value="{$vo.id}" {if condition="$user['role_id'] eq $vo['id']"}selected{/if}>{$vo.role_name}</option>
                                     {/foreach}
                                     {/if}
@@ -64,7 +51,6 @@
                             <label class="col-sm-3 control-label">真实姓名：</label>
                             <div class="input-group col-sm-4">
                                 <input id="real_name" type="text" class="form-control" name="real_name" required="" aria-required="true" value="{$user.real_name}">
-
                             </div>
                         </div>
                         <div class="form-group">
@@ -73,21 +59,19 @@
                                 {foreach name='status' item='vo' key='key'}
                                 <div class="radio i-checks col-sm-4">
                                     <label>
-                                        <input type="radio" value="{$key}" {if condition="$key == $user['status'] " }checked{/if} name="status"> <i></i> {$vo}</label>
+                                        <input type="radio" value="{$key}" {if condition="$key == $user['status']"}checked{/if} name="status"><i></i>{$vo}</label>
                                 </div>
                                 {/foreach}
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-3">
-                                <!--<input type="button" value="提交" class="btn btn-primary" id="postform"/>-->
                                 <button class="btn btn-primary" type="submit">提交</button>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
@@ -102,7 +86,6 @@
 <script src="__JS__/plugins/suggest/bootstrap-suggest.min.js"></script>
 <script src="__JS__/plugins/layer/layer.min.js"></script>
 <script type="text/javascript">
-
     //表单提交
     function toVaild(){
         var jz;
@@ -127,13 +110,10 @@
                 }else{
                     swal(data.msg, "", "error");
                 }
-
             }
         });
-
         return false;
     }
-
     //表单验证
     $(document).ready(function(){
         $(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",});
@@ -152,7 +132,6 @@
         errorClass: "help-block m-b-none",
         validClass: "help-block m-b-none"
     });
-
 </script>
 </body>
 </html>

@@ -54,6 +54,7 @@ class Member extends Controller
                         $params['msg_code'] = $code;
                         $params['send_time'] = time();
                         $params['send_times'] = $codeInfo['send_times'] + 1;
+                        $params['check_times'] = 0;
                         $sendCodeModel->updateByWhere($params, '', array('member_id' => session('memberId')));
                     }
                 } else {
@@ -63,6 +64,7 @@ class Member extends Controller
                     $params['send_time'] = time();
                     $params['today'] = strtotime(date('Y-m-d', time()));
                     $params['send_times'] = 1;
+                    $params['check_times'] = 0;
                     $sendCodeModel->updateByWhere($params, '', array('member_id' => session('memberId')));
                 }
             }

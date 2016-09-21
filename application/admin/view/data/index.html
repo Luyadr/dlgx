@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>数据备份/还原</title>
-    <link rel="shortcut icon" href="favicon.ico">
     <link href="__CSS__/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="__CSS__/font-awesome.min.css?v=4.4.0" rel="stylesheet">
     <link href="__CSS__/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
@@ -14,31 +13,12 @@
 </head>
 <body class="gray-bg">
 <div class="wrapper wrapper-content animated fadeInRight">
-    <!-- Panel Other -->
     <div class="ibox float-e-margins">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>数据表列表</h5>
-                <div class="ibox-tools">
-                    <a class="collapse-link">
-                        <i class="fa fa-chevron-up"></i>
-                    </a>
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="table_basic.html#">
-                        <i class="fa fa-wrench"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="table_basic.html#">选项1</a>
-                        </li>
-                        <li><a href="table_basic.html#">选项2</a>
-                        </li>
-                    </ul>
-                    <a class="close-link">
-                        <i class="fa fa-times"></i>
-                    </a>
-                </div>
+                <h5>数据备份/还原</h5>
             </div>
             <div class="ibox-content">
-
                 <table class="table table-bordered">
                     <thead>
                     <tr>
@@ -61,12 +41,10 @@
                     {/if}
                     </tbody>
                 </table>
-
             </div>
         </div>
     </div>
 </div>
-<!-- End Panel Other -->
 </div>
 <!-- 角色分配 -->
 <div class="col-sm-12" style="display: none" id="wait">
@@ -93,7 +71,6 @@
 <script src="__JS__/plugins/sweetalert/sweetalert.min.js"></script>
 <script src="__JS__/plugins/layer/layer.min.js"></script>
 <script type="text/javascript">
-
     function backup(table, all){
         index = layer.open({
             type: 1,
@@ -109,7 +86,6 @@
             });
         })
     }
-
     function recover(table){
         index = layer.open({
             type: 1,
