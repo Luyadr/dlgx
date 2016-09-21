@@ -12,14 +12,8 @@ class Index extends Controller
 {
     public function index()
     {
-        session('memberId',4);
-        session('memberIcon','http://wx.qlogo.cn/mmopen/NXsNg5c1niaXCcjXCBBkUDDHeEyMaibT422ydJV81PqWP2pBdQTPLOEeaAUdfOOLicf8F6bjLeQV0oEKbTIBjVX8a2HomPIcbFc/0');
-        session('memberName','123');
-        $this->redirect('index/show');
-
         //第一步：请求code
         $appId = 'wxd53d2b1ef188dca7';//大乐个学
-//        $appId = 'wxafea1eaaaf3b18ac';
         $redirectUri = 'http://lya.tunnel.qydev.com/dlgx/public/index.php/index/index/callback';
         $state = md5(uniqid(rand(), TRUE));
         session('state',$state);
@@ -38,8 +32,6 @@ class Index extends Controller
             }
             $appId = 'wxd53d2b1ef188dca7';//大乐个学
             $secret = 'aafdb067ff2aef548c50541392cf44b8';
-//            $appId = 'wxafea1eaaaf3b18ac';
-//            $secret = '370a57f55cf6d23bcfcae76034b0fa97';
             $url = 'https://api.weixin.qq.com/sns/oauth2/access_token?grant_type=authorization_code&appid='.$appId.'&secret='.$secret .'&code='.$code;
             $result = $this->get_url_contents($url);
             if(strpos($result, 'errcode') != FALSE) {

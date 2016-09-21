@@ -11,7 +11,7 @@ class MemberValidate extends Validate
         ['member_school', 'require', '学校不能为空'],
         ['member_department', 'require', '院系不能为空'],
         ['member_class', 'require', '专业班级不能为空'],
-        ['member_tel', 'require|num|length:11', ['手机号码不能为空','手机号码必须是数字','手机号码长度为11位']]
+        ['member_tel', 'require', '手机号码不能为空']
     ];
 
 }
