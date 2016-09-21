@@ -76,7 +76,7 @@ class Club extends Base
             'club' => $club->getInfoById($id),
             'verify_status' => config('verify_status')
         ]);
-        return $this->fetch();
+        return $this->fetch('club/edit_apply');
     }
     //编辑社团状态
     public function edit()
@@ -124,7 +124,7 @@ class Club extends Base
                 $selectResult[$key]['club_level'] = $club_level[$vo['club_level']];
                 if ($selectResult[$key]['verify_status'] == 1) {
                     $operate = [
-                        '审核' => url('club/edit_apply', ['id' => $vo['id']]),
+                        '审核' => url('club/editApply', ['id' => $vo['id']]),
                     ];
                     $selectResult[$key]['operate'] = showOperate($operate);
                 }

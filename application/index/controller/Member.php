@@ -30,7 +30,7 @@ class Member extends Controller
             $code = rand(1000,9999);
             $memberTel = input('param.memberTel');
             $sendCodeModel = new SendCodeModel();
-            $codeList = $sendCodeModel->getListByWhere(array('member_id' => $memberId));
+            $codeList = $sendCodeModel->getListByWhere(array('member_id' => $memberId), '', 0, 0, '');
             if(empty($codeList)) {
                 $params = [];
                 $params['member_id'] = $memberId;
@@ -70,16 +70,16 @@ class Member extends Controller
             require_once APP_PATH . "../extend/org/Api/Alidayu/TopSdk.php";
 
             $c = new TopClient;
-            $c->appkey = '23460524';
-            $c->secretKey = '22374c6567b55471012354017f22ae07';
+            $c->appkey = '23462399';
+            $c->secretKey = '5df2c9bff2a3f0f858b9c0c4af001dd3';
 
             $req = new AlibabaAliqinFcSmsNumSendRequest;
             $req->setExtend($memberId);
             $req->setSmsType("normal");
-            $req->setSmsFreeSignName("大乐个学");
-            $req->setSmsParam("{\"code\":\"$code\"}");
+            $req->setSmsFreeSignName("身份验证");
+            $req->setSmsParam("{\"code\":\"$code\",\"product\":\"【大乐个学】\"}");
             $req->setRecNum($memberTel);
-            $req->setSmsTemplateCode("SMS_15115232");
+            $req->setSmsTemplateCode("SMS_15540418");
 
             $resp = $c->execute($req);
 
@@ -98,7 +98,7 @@ class Member extends Controller
             $params = parseParams($params['data']);
 
             $sendCodeModel = new SendCodeModel();
-            $codeList = $sendCodeModel->getListByWhere(array('member_id' => session('memberId')));
+            $codeList = $sendCodeModel->getListByWhere(array('member_id' => session('memberId')), '', 0, 0, '');
             if(!empty($codeList)) {
                 $codeInfo = $codeList[0];
                 if($codeInfo['check_times'] > 5) {

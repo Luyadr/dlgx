@@ -110,23 +110,6 @@
         //当点击查询按钮的时候执行
         $("#search").bind("click", initTable);
     });
-
-    function del(id){
-        layer.confirm('确认删除此活动?', {icon: 3, title:'提示'}, function(index){
-            //do something
-            $.getJSON('./del', {'id' : id}, function(res){
-                if(res.code == 1){
-                    layer.alert('删除成功');
-                    initTable();
-                }else{
-                    layer.alert('删除失败');
-                }
-            });
-
-            layer.close(index);
-        })
-
-    }
 </script>
 </body>
 </html>
