@@ -24,13 +24,13 @@ class Video extends Base
                     $selectResult[$key]['video_release_time'] = date('Y-m-d H:i:s', $vo['video_release_time']);
                 }
                 $operate = [
-                    '编辑' => url('video/edit', ['id' => $vo['id']])
+                    '编辑' => url('video/edit', ['id' => $vo['id']]),
+                    '删除' => "javascript:del('" . $vo['id'] . "')"
                 ];
                 $selectResult[$key]['operate'] = showOperate($operate);
             }
             $return['total'] = $video->getCounts($where);
             $return['rows'] = $selectResult;
-
             return json($return);
         }
         return $this->fetch();
@@ -50,10 +50,8 @@ class Video extends Base
             unset($param['video_status']);
             $video = new VideoModel();
             $flag = $video->insert($param, 'VideoValidate');
-
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
-
         return $this->fetch();
     }
     //编辑视频
@@ -70,7 +68,6 @@ class Video extends Base
             }
             unset($param['video_status']);
             $flag = $video->edit($param, 'VideoValidate');
-
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
         $id = input('param.id');
@@ -83,16 +80,14 @@ class Video extends Base
         $this->assign([
             'video' => $info
         ]);
-
         return $this->fetch();
     }
-    //删除角色
+    //删除视频
     public function del()
     {
         $id = input('param.id');
         $video = new VideoModel();
         $flag = $video->del($id);
-
         return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
     }
 }

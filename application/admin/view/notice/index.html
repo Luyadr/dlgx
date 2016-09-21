@@ -3,8 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>官方公告</title>
-    <link rel="shortcut icon" href="__PUBLIC__/favicon.ico">
+    <title>公告列表</title>
     <link href="__CSS__/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="__CSS__/font-awesome.min.css?v=4.4.0" rel="stylesheet">
     <link href="__CSS__/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
@@ -14,7 +13,6 @@
 </head>
 <body class="gray-bg">
 <div class="wrapper wrapper-content animated fadeInRight">
-    <!-- Panel Other -->
     <div class="ibox float-e-margins">
         <div class="ibox-title">
             <h5>公告列表</h5>
@@ -24,7 +22,7 @@
                 <a href="./add"><button class="btn btn-outline btn-primary" type="button">添加公告</button></a>
             </div>
             <!--搜索框开始-->
-            <form id='commentForm' role="form" method="post" class="form-inline">
+            <form id="commentForm" role="form" method="post" class="form-inline">
                 <div class="content clearfix m-b">
                     <div class="form-group">
                         <label>公告标题：</label>
@@ -38,7 +36,6 @@
             </form>
             <!--搜索框结束-->
             <div class="hr-line-dashed"></div>
-
             <div class="example-wrap">
                 <div class="example">
                     <table id="cusTable" data-height="700">
@@ -51,11 +48,9 @@
                     </table>
                 </div>
             </div>
-            <!-- End Example Pagination -->
         </div>
     </div>
 </div>
-<!-- End Panel Other -->
 </div>
 <script src="__JS__/jquery.min.js?v=2.1.4"></script>
 <script src="__JS__/bootstrap.min.js?v=3.3.6"></script>
@@ -100,17 +95,14 @@
             }
         });
     }
-
     $(document).ready(function () {
         //调用函数，初始化表格
         initTable();
-
         //当点击查询按钮的时候执行
         $("#search").bind("click", initTable);
     });
-
     function del(id){
-        layer.confirm('确认删除此活动?', {icon: 3, title:'提示'}, function(index){
+        layer.confirm('确认删除此公告?', {icon: 3, title:'提示'}, function(index){
             //do something
             $.getJSON('./del', {'id' : id}, function(res){
                 if(res.code == 1){
@@ -120,10 +112,8 @@
                     layer.alert('删除失败');
                 }
             });
-
             layer.close(index);
         })
-
     }
 </script>
 </body>

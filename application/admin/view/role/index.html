@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>角色列表</title>
-    <link rel="shortcut icon" href="favicon.ico">
     <link href="__CSS__/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="__CSS__/font-awesome.min.css?v=4.4.0" rel="stylesheet">
     <link href="__CSS__/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
@@ -14,7 +13,6 @@
 </head>
 <body class="gray-bg">
 <div class="wrapper wrapper-content animated fadeInRight">
-    <!-- Panel Other -->
     <div class="ibox float-e-margins">
         <div class="ibox-title">
             <h5>角色列表</h5>
@@ -50,11 +48,9 @@
                     </table>
                 </div>
             </div>
-            <!-- End Example Pagination -->
         </div>
     </div>
 </div>
-<!-- End Panel Other -->
 </div>
 <!-- 角色分配 -->
 <div class="zTreeDemoBackground left" style="display: none" id="role">
@@ -120,16 +116,13 @@
             }
         });
     }
-
     $(document).ready(function () {
         //调用函数，初始化表格
         initTable();
-
         //当点击查询按钮的时候执行
         $("#search").bind("click", initTable);
 
     });
-
     function del(id){
         layer.confirm('确认删除此角色?', {icon: 3, title:'提示'}, function(index){
             //do something
@@ -142,10 +135,8 @@
                     layer.alert('删除失败');
                 }
             });
-
             layer.close(index);
         })
-
     }
     var index = '';
     var index2 = '';
@@ -171,7 +162,6 @@
                 layer.style(index, {
                     top: '150px'
                 });
-
                 //设置zetree
                 var setting = {
                     check:{
@@ -183,15 +173,12 @@
                         }
                     }
                 };
-
                 $.fn.zTree.init($("#treeType"), setting, zNodes);
                 var zTree = $.fn.zTree.getZTreeObj("treeType");
                 zTree.expandAll(true);
-
             }else{
                 layer.alert(res.msg);
             }
-
         });
     }
     //确认分配权限
@@ -216,7 +203,6 @@
             }else{
                 layer.alert(res.msg);
             }
-
         }, 'json')
     })
 </script>

@@ -1,6 +1,6 @@
 $(function() {
 	$(".submit").click(function(e) {
-		var i = 0, val, flag = true, inputList = $("input[type='text']"), 
+		var i = 0, val, flag = true, inputList = $("input[type='text']"),
 		len = inputList.length;
 		for(;i < len;i++){
 			if(!$(inputList[i]).val().trim()) {
@@ -21,10 +21,11 @@ $(function() {
 		}
 	});
 
-	$(".scode-send-wrap button[type = 'button']").click(function() {
+	$("#send-code").click(function(e) {
 		var phone;
+		e.preventDefault();
 
-		if(phone = $(this).prev('input').val().trim()) {
+		if(phone = $("#send-code").prev('input').val().trim()) {
 			if(!regRule.mobile.test(phone)) {
 				myalert('请输入规范的手机号！');
 				return false;
@@ -42,17 +43,17 @@ $(function() {
 			success: function(data) {
 				myalert(data.msg);
 				if(data.code == 1) {
-					$(this).addClass('active').attr('disabled',true);
+					$("#send-code").addClass('active').attr('disabled',true);
 					var count = 58,
-						that = $(this).val('59s后可重新发送'),
+						that = $("#send-code").text('59s后可重新发送'),
 						interID = setInterval(function() {
 							if(count == 0) {
-								that.removeClass('active').val('发送验证码');
+								that.removeClass('active').text('发送验证码');
 								clearInterval(interID);
 								that.removeAttr("disabled");
 								return;
 							}
-							that.val(count-- + 's后可重新发送');
+							that.text(count-- + 's后可重新发送');
 						},1000)
 				}
 			}

@@ -3,14 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>添加节点</title>
-    <link rel="shortcut icon" href="favicon.ico">
+    <title>编辑节点</title>
     <link href="__CSS__/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="__CSS__/font-awesome.min.css?v=4.4.0" rel="stylesheet">
     <link href="__CSS__/animate.min.css" rel="stylesheet">
     <link href="__CSS__/plugins/iCheck/custom.css" rel="stylesheet">
     <link href="__CSS__/style.min.css?v=4.1.0" rel="stylesheet">
-    <!-- Sweet Alert -->
     <link href="__CSS__/plugins/sweetalert/sweetalert.css" rel="stylesheet">
 </head>
 <body class="gray-bg">
@@ -19,18 +17,7 @@
         <div class="col-sm-8">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>添加节点</h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="form_basic.html#">
-                            <i class="fa fa-wrench"></i>
-                        </a>
-                        <a class="close-link">
-                            <i class="fa fa-times"></i>
-                        </a>
-                    </div>
+                    <h5>编辑节点</h5>
                 </div>
                 <div class="ibox-content">
                     <form class="form-horizontal m-t" id="commentForm" method="post" onsubmit="return toVaild()">
@@ -76,26 +63,23 @@
                                 <input id="action_name" type="text" class="form-control" name="action_name" required="" aria-required="true" value="{$node.action_name}">
                             </div>
                         </div>
-
                         <div class="form-group">
                             <label class="col-sm-3 control-label">是否是菜单项：</label>
                             <div class="input-group col-sm-4">
                                 <div class="radio i-checks col-sm-10">
-                                    <label><input type="radio" value="2"  name="is_menu"  {if condition="$node.is_menu=2"}checked{/if}> <i></i>菜单项 </label>
-                                    <label><input type="radio" value="1"  name="is_menu"  {if condition="$node.is_menu=1"}checked{/if}> <i></i>非菜单项</label>
+                                    <label><input type="radio" value="2" name="is_menu"  {if condition="$node.is_menu=2"}checked{/if}><i></i>菜单项</label>
+                                    <label><input type="radio" value="1" name="is_menu"  {if condition="$node.is_menu=1"}checked{/if}><i></i>非菜单项</label>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-3">
-                                <!--<input type="button" value="提交" class="btn btn-primary" id="postform"/>-->
                                 <button class="btn btn-primary" type="submit">提交</button>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
@@ -110,7 +94,6 @@
 <script src="__JS__/plugins/suggest/bootstrap-suggest.min.js"></script>
 <script src="__JS__/plugins/layer/layer.min.js"></script>
 <script type="text/javascript">
-
     //表单提交
     function toVaild(){
         var jz;
@@ -118,7 +101,7 @@
         $.ajax({
             type:"POST",
             url:url,
-            data:{'data' : $('#commentForm').serialize()},// 你的formid
+            data:{'data' : $('#commentForm').serialize()},//你的formid
             async: false,
             beforeSend:function(){
                 jz = layer.load(0, {shade: false}); //0代表加载的风格，支持0-2
@@ -138,13 +121,11 @@
 
             }
         });
-
         return false;
     }
-
     //表单验证
     $(document).ready(function(){
-        $(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",});
+        $(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green"});
     });
     $.validator.setDefaults({
         highlight: function(e) {
