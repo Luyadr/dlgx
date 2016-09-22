@@ -1,11 +1,11 @@
 <?php
+
 return [
     //模板参数替换
     'view_replace_str' => array(
-        '__PUBLIC__' => '/dlgx/public',
-        '__CSS__'    => '/dlgx/public/admin/css',
-        '__IMAGES__' => '/dlgx/public/admin/images',
-        '__JS__'     => '/dlgx/public/admin/js'
+        '__CSS__'    => '/admin/css',
+        '__IMAGES__' => '/admin/images',
+        '__JS__'     => '/admin/js'
     ),
     //管理员状态
     'user_status' => [

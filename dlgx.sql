@@ -1,5 +1,5 @@
 ﻿# Host: localhost  (Version 5.7.11)
-# Date: 2016-09-21 23:02:02
+# Date: 2016-09-22 15:10:59
 # Generator: MySQL-Front 5.4  (Build 1.21)
 
 /*!40101 SET NAMES utf8 */;
@@ -15,7 +15,7 @@ CREATE TABLE `dlgx_act_join` (
   `member_id` int(11) NOT NULL COMMENT '会员ID',
   `join_time` int(11) NOT NULL COMMENT '参加时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
 # Data for table "dlgx_act_join"
@@ -146,7 +146,7 @@ CREATE TABLE `dlgx_image` (
   `image_url` varchar(255) NOT NULL COMMENT '图片链接',
   `image_create_time` int(11) NOT NULL COMMENT '图片创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
 # Data for table "dlgx_image"
@@ -305,7 +305,7 @@ CREATE TABLE `dlgx_user` (
 # Data for table "dlgx_user"
 #
 
-INSERT INTO `dlgx_user` VALUES (1,'admin','21232f297a57a5a743894a0e4a801fc3','大乐个学',1,1474468031,'0.0.0.0',72,1);
+INSERT INTO `dlgx_user` VALUES (1,'admin','21232f297a57a5a743894a0e4a801fc3','大乐个学',1,1474528069,'127.0.0.1',74,1);
 
 #
 # Structure for table "dlgx_video"
