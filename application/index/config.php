@@ -12,10 +12,10 @@
 return [
     //模板参数替换
     'view_replace_str' => array(
-        '__CSS__' => '/index/css',
-        '__IMAGES__' => '/index/images',
-        '__JS__' => '/index/js',
-        '__SCRIPT__' => '/index/script',
-        '__STATIC__' => '/index/static',
+        '__CSS__' => '/static/index/css',
+        '__IMAGES__' => '/static/index/images',
+        '__JS__' => '/static/index/js',
+        '__SCRIPT__' => '/static/index/script',
+        '__STATIC__' => '/static/index/static'
     )
 ];

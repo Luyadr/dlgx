@@ -3,9 +3,9 @@
 return [
     //模板参数替换
     'view_replace_str' => array(
-        '__CSS__'    => '/admin/css',
-        '__IMAGES__' => '/admin/images',
-        '__JS__'     => '/admin/js'
+        '__CSS__'    => '/static/admin/css',
+        '__IMAGES__' => '/static/admin/images',
+        '__JS__'     => '/static/admin/js'
     ),
     //管理员状态
     'user_status' => [
